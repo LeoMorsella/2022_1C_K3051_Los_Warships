@@ -42,6 +42,10 @@ namespace TGC.MonoGame.TP
         private Matrix World { get; set; }
         private Matrix View { get; set; }
         private Matrix Projection { get; set; }
+        private Model ShipModel { get; set; }
+        private Matrix WorldShip { get; set; }
+        private Vector3 ShipPosition { get; set; }
+        private Matrix ShipScale { get; set; }
 
         /// <summary>
         ///     Se llama una sola vez, al principio cuando se ejecuta el ejemplo.
@@ -61,9 +65,11 @@ namespace TGC.MonoGame.TP
 
             // Configuramos nuestras matrices de la escena.
             World = Matrix.Identity;
-            View = Matrix.CreateLookAt(Vector3.UnitZ * 150, Vector3.Zero, Vector3.Up);
+            View = Matrix.CreateLookAt(Vector3.UnitZ * 100000, Vector3.Zero, Vector3.Up);
             Projection =
                 Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, GraphicsDevice.Viewport.AspectRatio, 1, 250);
+
+            WorldShip = Matrix.CreateTranslation(Vector3.Zero);
 
             base.Initialize();
         }
@@ -80,10 +86,12 @@ namespace TGC.MonoGame.TP
 
             // Cargo el modelo del logo.
             Model = Content.Load<Model>(ContentFolder3D + "tgc-logo/tgc-logo");
+            ShipModel = Content.Load<Model>(ContentFolder3D + "ShipA/Ship");
 
             // Cargo un efecto basico propio declarado en el Content pipeline.
             // En el juego no pueden usar BasicEffect de MG, deben usar siempre efectos propios.
             Effect = Content.Load<Effect>(ContentFolderEffects + "BasicShader");
+
 
             // Asigno el efecto que cargue a cada parte del mesh.
             // Un modelo puede tener mas de 1 mesh internamente.
@@ -124,18 +132,11 @@ namespace TGC.MonoGame.TP
             // Aca deberiamos poner toda la logia de renderizado del juego.
             GraphicsDevice.Clear(Color.Black);
 
-            // Para dibujar le modelo necesitamos pasarle informacion que el efecto esta esperando.
-            Effect.Parameters["View"].SetValue(View);
-            Effect.Parameters["Projection"].SetValue(Projection);
-            Effect.Parameters["DiffuseColor"].SetValue(Color.DarkBlue.ToVector3());
-            var rotationMatrix = Matrix.CreateRotationY(Rotation);
+            ShipModel.Draw(WorldShip, View, Projection);
 
-            foreach (var mesh in Model.Meshes)
-            {
-                World = mesh.ParentBone.Transform * rotationMatrix;
-                Effect.Parameters["World"].SetValue(World);
-                mesh.Draw();
-            }
+            // Para dibujar le modelo necesitamos pasarle informacion que el efecto esta esperando.
+
+            base.Draw(gameTime);
         }
 
         /// <summary>

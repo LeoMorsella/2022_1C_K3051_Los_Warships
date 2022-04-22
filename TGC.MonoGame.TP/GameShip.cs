@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using TGC.MonoGame.Samples.Cameras;
 
 namespace TGC.MonoGame.TP;
 
@@ -19,7 +20,10 @@ public class GameShip:Game
         private Model ShipModel { get; set; }
         private Matrix ShipWorld { get; set; }
         private FollowCamera FollowCamera { get; set; }
+        private FreeCamera FreeCamera { get; set; } 
         
+        public Matrix View { get; private set; }
+        public Matrix Projection { get; private set; }
         private Matrix ShipScale { get; set; }
         
         private Vector3 ShipPosition { get; set; }
@@ -69,42 +73,40 @@ public class GameShip:Game
             Graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 100;
             Graphics.ApplyChanges();
 
-            // Creo una camaar para seguir a nuestro auto
-            FollowCamera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio);
-            
-        
+        // Creo una camaar para seguir a nuestro auto
+            FreeCamera = new FreeCamera(GraphicsDevice.Viewport.AspectRatio, Vector3.UnitZ * 1000, (new Point(GraphicsDevice.Viewport.Width/2,GraphicsDevice.Viewport.Height/2)));
+            FreeCamera.MovementSpeed = 1000f;
+
+            ShipWorld = Matrix.Identity;
 
             //Posicion del auto y matriz
             // Configuro la matriz de mundo del auto
-            ShipWorld = Matrix.Identity;
             
             ShipScale = Matrix.CreateScale(0.05f);
 
-            
-            
             // Mar
             
             _vertices = new VertexPositionColor[4];
             _vertices[0] = new VertexPositionColor
             {
                 Color = Color.Blue,
-                Position = new Vector3(-2, -2, 0)
+                Position = new Vector3(-500f, 0,-500f)
 
             };
             _vertices[1] = new VertexPositionColor
             {
                 Color = Color.DarkBlue,
-                Position = new Vector3(-2, 2, 0)
+                Position = new Vector3(-500f,0,500f)
             };
             _vertices[2] = new VertexPositionColor
             {
                 Color = Color.Blue,
-                Position = new Vector3(2, 2, 0)
+                Position = new Vector3(500f,0,500f)
             };
             _vertices[3] = new VertexPositionColor
             {
                 Color = Color.Blue,
-                Position = new Vector3(2, -2, 0)
+                Position = new Vector3(500f,0,-500f)
             };
             _indices = new short[6];
             _indices[0] = 0;
@@ -114,7 +116,6 @@ public class GameShip:Game
             _indices[4] = 3;
             _indices[5] = 0;
         
-            
             base.Initialize();
         }
 
@@ -122,26 +123,20 @@ public class GameShip:Game
         protected override void LoadContent()
         {
             
-
             // La carga de contenido debe ser realizada aca
             ShipModel = Content.Load<Model>(ContentFolder3D + "ShipA/Ship");
-
-            
+ 
             // Mar
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             _basicEffect = new BasicEffect(GraphicsDevice);
-// TODO: use this.Content to load your game content here
-            _view = Matrix.CreateLookAt(new Vector3(0, 0, 8), new Vector3(0, 0, 0), new
-                Vector3(0, 1, 0));
-            _projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 1920f /
-                1080f, 0.01f, 100f);
+            // TODO: use this.Content to load your game content here
+
             _basicEffect.World = _world;
-            _basicEffect.View = _view;
-            _basicEffect.Projection = _projection;
+            _basicEffect.View = FreeCamera.View;
+            _basicEffect.Projection = FreeCamera.Projection;
             _basicEffect.VertexColorEnabled = true;
           
-
             base.LoadContent();
         }
 
@@ -151,7 +146,6 @@ public class GameShip:Game
         /// </summary>
         protected override void Update(GameTime gameTime)
         {
-        
             // Caputo el estado del teclado
             var keyboardState = Keyboard.GetState();
             
@@ -160,17 +154,15 @@ public class GameShip:Game
             if (keyboardState.IsKeyDown(Keys.Escape))
                 // Salgo del juego
                 Exit();
-
-
+     
             ShipWorld = ShipScale;
 
 
             // Actualizo la camara, enviandole la matriz de mundo del auto
-            FollowCamera.Update(gameTime, ShipWorld);
+            FreeCamera.Update(gameTime);
 
             base.Update(gameTime);
         }
-        
         
         /// <summary>
         ///     Llamada para cada frame
@@ -180,14 +172,10 @@ public class GameShip:Game
         {
             // Limpio la pantalla
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-       
-           
+   
             // El dibujo del auto debe ir aca
-            
-            
-            ShipModel.Draw(ShipWorld,FollowCamera.View,FollowCamera.Projection);
-            
+               
+            ShipModel.Draw(ShipWorld,FreeCamera.View,FreeCamera.Projection);
             
             GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
             foreach (EffectPass pass in _basicEffect.CurrentTechnique.Passes)
@@ -200,10 +188,6 @@ public class GameShip:Game
            // Quad.Draw(FloorWorld*viewProjection);
             base.Draw(gameTime);
         }
-        
-        
-        
-        
 
         /// <summary>
         ///     Libero los recursos cargados

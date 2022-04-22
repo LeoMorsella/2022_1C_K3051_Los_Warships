@@ -36,16 +36,12 @@ namespace TGC.MonoGame.TP
 
         private GraphicsDeviceManager Graphics { get; }
         private SpriteBatch SpriteBatch { get; set; }
-        private Model Model { get; set; }
         private Effect Effect { get; set; }
-        private float Rotation { get; set; }
-        private Matrix World { get; set; }
         private Matrix View { get; set; }
         private Matrix Projection { get; set; }
         private Model ShipModel { get; set; }
         private Matrix WorldShip { get; set; }
-        private Vector3 ShipPosition { get; set; }
-        private Matrix ShipScale { get; set; }
+
 
         /// <summary>
         ///     Se llama una sola vez, al principio cuando se ejecuta el ejemplo.
@@ -63,13 +59,15 @@ namespace TGC.MonoGame.TP
             GraphicsDevice.RasterizerState = rasterizerState;
             // Seria hasta aca.
 
-            // Configuramos nuestras matrices de la escena.
-            World = Matrix.Identity;
-            View = Matrix.CreateLookAt(Vector3.UnitZ * 100000, Vector3.Zero, Vector3.Up);
-            Projection =
-                Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, GraphicsDevice.Viewport.AspectRatio, 1, 250);
+            // Configuro el tamaño de la pantalla
+            Graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 100;
+            Graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 100;
+            Graphics.ApplyChanges();
 
-            WorldShip = Matrix.CreateTranslation(Vector3.Zero);
+            // Configuramos nuestras matrices de la escena.
+            WorldShip = Matrix.Identity;
+            View = Matrix.CreateLookAt(Vector3.UnitY * 100000f, WorldShip.Down, Vector3.Up);
+            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, GraphicsDevice.Viewport.AspectRatio, 1f,400f);
 
             base.Initialize();
         }
@@ -84,21 +82,12 @@ namespace TGC.MonoGame.TP
             // Aca es donde deberiamos cargar todos los contenido necesarios antes de iniciar el juego.
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // Cargo el modelo del logo.
-            Model = Content.Load<Model>(ContentFolder3D + "tgc-logo/tgc-logo");
+            // Cargo el modelo del ShipA.
             ShipModel = Content.Load<Model>(ContentFolder3D + "ShipA/Ship");
 
             // Cargo un efecto basico propio declarado en el Content pipeline.
             // En el juego no pueden usar BasicEffect de MG, deben usar siempre efectos propios.
             Effect = Content.Load<Effect>(ContentFolderEffects + "BasicShader");
-
-
-            // Asigno el efecto que cargue a cada parte del mesh.
-            // Un modelo puede tener mas de 1 mesh internamente.
-            foreach (var mesh in Model.Meshes)
-                // Un mesh puede tener mas de 1 mesh part (cada 1 puede tener su propio efecto).
-            foreach (var meshPart in mesh.MeshParts)
-                meshPart.Effect = Effect;
 
             base.LoadContent();
         }
@@ -118,7 +107,6 @@ namespace TGC.MonoGame.TP
                 Exit();
 
             // Basado en el tiempo que paso se va generando una rotacion.
-            Rotation += Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
 
             base.Update(gameTime);
         }
@@ -132,9 +120,29 @@ namespace TGC.MonoGame.TP
             // Aca deberiamos poner toda la logia de renderizado del juego.
             GraphicsDevice.Clear(Color.Black);
 
-            ShipModel.Draw(WorldShip, View, Projection);
-
-            // Para dibujar le modelo necesitamos pasarle informacion que el efecto esta esperando.
+            foreach (ModelMesh malla in ShipModel.Meshes)
+            {
+                //indica todos lo efectos basicos que pueden aplicarse a las mallas
+                foreach (BasicEffect efecto in malla.Effects)
+                {
+                    //luz basica
+                    efecto.EnableDefaultLighting();
+                    //MUY IMPORTANTE
+                    //indica que se dibujara ne la pantalla
+                    // en esta ocasion sera el objeto tan como esta
+                    efecto.World = WorldShip;
+                    //crea una vista para la camara
+                    //en ella se define la poscion, el objetivo y el vector arriba
+                    efecto.View = View;
+                    //indica la proyeccion
+                    //esta presente la relacion de aspecto
+                    //y los limites cera y lejos para dibujar en la pantalla
+                    efecto.Projection = Projection;
+                }
+                //Dibuja la malla en la ShipModel.Draw(WorldShip, View, Projection);
+                malla.Draw();
+                
+            }
 
             base.Draw(gameTime);
         }

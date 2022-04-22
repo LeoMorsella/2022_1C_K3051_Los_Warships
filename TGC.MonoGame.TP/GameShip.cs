@@ -3,12 +3,13 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using TGC.MonoGame.Samples.Cameras;
+using TGC.MonoGame.Samples.Geometries.Textures;
 
 namespace TGC.MonoGame.TP;
 
 public class GameShip:Game
 {
-     public const string ContentFolder3D = "Models/";
+        public const string ContentFolder3D = "Models/";
         public const string ContentFolderEffects = "Effects/";
         public const string ContentFolderMusic = "Music/";
         public const string ContentFolderSounds = "Sounds/";
@@ -27,7 +28,8 @@ public class GameShip:Game
         private Matrix ShipScale { get; set; }
         
         private Vector3 ShipPosition { get; set; }
-    
+        private QuadPrimitive QuadPrimitive { get; set; }
+        private BoxPrimitive BoxPrimitive { get; set; } 
         
         //Dibujar Mar
         private BasicEffect _basicEffect;
@@ -78,6 +80,10 @@ public class GameShip:Game
             FreeCamera.MovementSpeed = 1000f;
 
             ShipWorld = Matrix.Identity;
+
+            QuadPrimitive = new QuadPrimitive(GraphicsDevice);
+            
+            BoxPrimitive = new BoxPrimitive(GraphicsDevice,Vector3.Up * 100,Texture2D.FromFile(GraphicsDevice,)
 
             //Posicion del auto y matriz
             // Configuro la matriz de mundo del auto

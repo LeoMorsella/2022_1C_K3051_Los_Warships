@@ -83,7 +83,7 @@ public class GameShip:Game
 
             QuadPrimitive = new QuadPrimitive(GraphicsDevice);
             
-            BoxPrimitive = new BoxPrimitive(GraphicsDevice,Vector3.Up * 100,Texture2D.FromFile(GraphicsDevice,)
+            
 
             //Posicion del auto y matriz
             // Configuro la matriz de mundo del auto
@@ -191,7 +191,7 @@ public class GameShip:Game
                     0, 4, _indices, 0, 2);
             }
 
-           // Quad.Draw(FloorWorld*viewProjection);
+           //Quad.Draw(FloorWorld*viewProjection);
             base.Draw(gameTime);
         }
 

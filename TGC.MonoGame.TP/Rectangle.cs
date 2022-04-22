@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using TGC.MonoGame.Samples.Cameras;
 
 namespace TGC.MonoGame.TP;
 
@@ -36,6 +37,21 @@ public class Rectangle:Game
         private Matrix _projection;
         private SpriteBatch _spriteBatch;
         
+        private Camera Camera { get; set; }
+    
+        private VertexBuffer Vertices { get; set; }
+    
+        private IndexBuffer Indices { get; set; }
+    
+        private BasicEffect Effect { get; set; }
+
+        private Matrix BoxWorld
+        {
+            get;
+            set;
+
+        } = Matrix.Identity;
+        
 
         
         public Rectangle()
@@ -69,36 +85,16 @@ public class Rectangle:Game
             Graphics.PreferredBackBufferWidth = 1920;
             Graphics.PreferredBackBufferHeight = 1080;
             Graphics.ApplyChanges();
-// TODO: Add your initialization logic here
-            _vertices = new VertexPositionColor[4];
-            _vertices[0] = new VertexPositionColor
-            {
-                Color = Color.Blue,
-                Position = new Vector3(-2, -2, 0)
+            
+            
+            Camera = new TargetCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(0, 20, 60), Vector3.Zero);
 
-            };
-            _vertices[1] = new VertexPositionColor
-            {
-                Color = Color.DarkBlue,
-                Position = new Vector3(-2, 2, 0)
-            };
-            _vertices[2] = new VertexPositionColor
-            {
-                Color = Color.Blue,
-                Position = new Vector3(2, 2, 0)
-            };
-            _vertices[3] = new VertexPositionColor
-            {
-                Color = Color.Blue,
-                Position = new Vector3(2, -2, 0)
-            };
-            _indices = new short[6];
-            _indices[0] = 0;
-            _indices[1] = 1;
-            _indices[2] = 2;
-            _indices[3] = 2;
-            _indices[4] = 3;
-            _indices[5] = 0;
+            Effect = new BasicEffect(GraphicsDevice);
+            Effect.VertexColorEnabled = true;
+        
+            CreateVertexBuffer(Vector3.One * 25, Vector3.Zero, Color.Cyan, Color.Cyan, Color.Cyan, Color.Cyan,
+                Color.Cyan, Color.Cyan, Color.Cyan, Color.Cyan);
+            CreateIndexBuffer(GraphicsDevice);
 
             
 
@@ -144,6 +140,17 @@ public class Rectangle:Game
             
             var deltaTime = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
 
+           
+            // Press Directional Keys to rotate cube
+            if (keyboardState.IsKeyDown(Keys.Up)) BoxWorld *= Matrix.CreateRotationX(-0.05f);
+
+            if (keyboardState.IsKeyDown(Keys.Down)) BoxWorld *= Matrix.CreateRotationX(0.05f);
+
+            if (keyboardState.IsKeyDown(Keys.Left)) BoxWorld *= Matrix.CreateRotationY(-0.05f);
+
+            if (keyboardState.IsKeyDown(Keys.Right)) BoxWorld *= Matrix.CreateRotationY(0.05f);
+            
+            
             if (keyboardState.IsKeyDown(Keys.Escape))
                 // Salgo del juego
                 Exit();
@@ -158,14 +165,19 @@ public class Rectangle:Game
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-// TODO: Add your drawing code here
-            GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
-            foreach (EffectPass pass in _basicEffect.CurrentTechnique.Passes)
+            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+
+            GraphicsDevice.SetVertexBuffer(Vertices);
+            GraphicsDevice.Indices = Indices;
+
+            Effect.World = BoxWorld;
+            Effect.View = Camera.View;
+            Effect.Projection = Camera.Projection;
+
+            foreach (var pass in Effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                GraphicsDevice.DrawUserIndexedPrimitives(PrimitiveType.TriangleList, _vertices,
-                    0, 4, _indices, 0, 2);
+                GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, Indices.IndexCount / 3);
             }
             base.Draw(gameTime);
         }
@@ -173,6 +185,67 @@ public class Rectangle:Game
         /// <summary>
         ///     Libero los recursos cargados
         /// </summary>
+        ///
+        private void CreateVertexBuffer(Vector3 size, Vector3 center, Color color1, Color color2, Color color3,
+            Color color4, Color color5, Color color6, Color color7, Color color8)
+        {
+            var x = size.X / 2;
+            var y = size.Y / 2;
+            var z = size.Z / 2;
+
+            var cubeVertices = new[]
+            {
+                // Bottom-Left Front.
+                new VertexPositionColor(new Vector3(-x + center.X, -y + center.Y, -z + center.Z), color1),
+                // Bottom-Left Back.
+                new VertexPositionColor(new Vector3(-x + center.X, -y + center.Y, z + center.Z), color2),
+                // Bottom-Right Back.
+                new VertexPositionColor(new Vector3(x + center.X, -y + center.Y, z + center.Z), color3),
+                // Bottom-Right Front.
+                new VertexPositionColor(new Vector3(x + center.X, -y + center.Y, -z + center.Z), color4),
+                // Top-Left Front.
+                new VertexPositionColor(new Vector3(-x + center.X, y + center.Y, -z + center.Z), color5),
+                // Top-Left Back.
+                new VertexPositionColor(new Vector3(-x + center.X, y + center.Y, z + center.Z), color6),
+                // Top-Right Back.
+                new VertexPositionColor(new Vector3(x + center.X, y + center.Y, z + center.Z), color7),
+                // Top-Right Front.
+                new VertexPositionColor(new Vector3(x + center.X, y + center.Y, -z + center.Z), color8)
+            };
+
+            Vertices = new VertexBuffer(GraphicsDevice, VertexPositionColor.VertexDeclaration, cubeVertices.Length,
+                BufferUsage.WriteOnly);
+            Vertices.SetData(cubeVertices);
+        }
+
+        /// <summary>
+        ///     Create an index buffer for the vertex buffer that the figure has.
+        /// </summary>
+        /// <param name="device">The GraphicsDevice object to associate with the index buffer.</param>
+        private void CreateIndexBuffer(GraphicsDevice device)
+        {
+            var cubeIndices = new ushort[]
+            {
+                // Bottom face.
+                0, 2, 3, 0, 1, 2,
+                // Top face.
+               4, 6, 5, 4, 7, 6,
+               
+                // Front face.
+                5, 2, 1, 5, 6, 2,
+                // Back face.
+               0, 7, 4, 0, 3, 7,
+               
+               
+               // Left face.
+                0, 4, 1, 1, 4, 5,
+                // Right face.
+                2, 6, 3, 3, 6, 7
+            };
+
+            Indices = new IndexBuffer(device, IndexElementSize.SixteenBits, cubeIndices.Length, BufferUsage.WriteOnly);
+            Indices.SetData(cubeIndices);
+        }
         protected override void UnloadContent()
         {
             // Libero los recursos cargados dessde Content Manager

@@ -1,4 +1,6 @@
 ﻿using System;
+using TGC.MonoGame.Samples.Samples.Heightmaps;
+
 
 namespace TGC.MonoGame.TP
 {
@@ -7,7 +9,7 @@ namespace TGC.MonoGame.TP
         [STAThread]
         static void Main()
         {
-            using (var game = new GameShip())
+            using (var game = new GameShips())
                 game.Run();
         }
     }

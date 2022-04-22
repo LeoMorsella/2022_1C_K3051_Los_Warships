@@ -35,6 +35,7 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
         private Matrix ShipWorld { get; set; }
         private Matrix ShipScale { get; set; }
         
+        private Vector3 ShipPosition { get; set; }
         
 
         // Triangle count in this case
@@ -59,6 +60,7 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             
             ShipWorld = Matrix.Identity;
             ShipScale = Matrix.CreateScale(0.01f);
+            ShipPosition = Vector3.UnitY * 100f;
 
             base.Initialize();
         }
@@ -88,7 +90,7 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
 
             Ship = Content.Load<Model>(ContentFolder3D + "ShipA/Ship");
 
-            ShipWorld = ShipScale * Matrix.Identity;
+            ShipWorld = ShipScale * Matrix.CreateTranslation(ShipPosition);
             
             
             base.LoadContent();
@@ -116,13 +118,14 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             Effect.View = Camera.View;
             Effect.Projection = Camera.Projection;
             
-            Ship.Draw(ShipWorld,Camera.View,Camera.Projection);
+            
             foreach (var pass in Effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
                 GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, PrimitiveCount);
             }
 
+            Ship.Draw(ShipWorld,Camera.View,Camera.Projection);
             
 
             base.Draw(gameTime);

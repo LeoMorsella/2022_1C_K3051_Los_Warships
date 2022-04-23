@@ -76,7 +76,7 @@ public class GameShip:Game
             Graphics.ApplyChanges();
 
         // Creo una camaar para seguir a nuestro auto
-            FreeCamera = new FreeCamera(GraphicsDevice.Viewport.AspectRatio, Vector3.UnitZ * 1000, (new Point(GraphicsDevice.Viewport.Width/2,GraphicsDevice.Viewport.Height/2)));
+            FreeCamera = new FreeCamera(GraphicsDevice.Viewport.AspectRatio, Vector3.UnitZ * 1000, new Point(GraphicsDevice.Viewport.Width/2,GraphicsDevice.Viewport.Height/2));
             FreeCamera.MovementSpeed = 1000f;
 
             ShipWorld = Matrix.Identity;

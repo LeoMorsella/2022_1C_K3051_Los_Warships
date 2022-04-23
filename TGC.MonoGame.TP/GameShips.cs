@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using TGC.MonoGame.Samples.Cameras;
 
-
 namespace TGC.MonoGame.Samples.Samples.Heightmaps
 {
     /// <summary>
@@ -28,15 +27,27 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
         private Texture2D TerrainTexture { get; set; }
         private VertexBuffer TerrainVertexBuffer { get; set; }
         private IndexBuffer TerrainIndexBuffer { get; set; }
-        private Camera Camera { get; set; }
+        private FreeCamera Camera { get; set; }
         
         private Model Ship { get; set; }
+        private Model Ship2 { get; set; }
+        private Model Island1 { get; set; }
+        private Model Island2  { get; set; }
+        private Model Island3 { get; set; }
         
         private Matrix ShipWorld { get; set; }
+        private Matrix ShipWorld2 { get; set; }
+        private Matrix IslandWorld1 { get; set; }
+        private Matrix IslandWorld2  { get; set; }
+        private Matrix IslandWorld3 { get; set; }
+
         private Matrix ShipScale { get; set; }
-        
+        private Matrix IslandScale { get; set; }
+        // Positions
         private Vector3 ShipPosition { get; set; }
-        
+        private Vector3 ShipPosition2 { get; set; }
+        private Vector3 IslandPosition1 { get; set; }
+
 
         // Triangle count in this case
         private int PrimitiveCount { get; set; }
@@ -55,12 +66,35 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
         /// <inheritdoc />
         protected override void Initialize()
         {
-            Camera = new SimpleCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-400f, 1000f, 2000f), 400, 1.0f, 1,
-                6000);
+            // Configuro el tamaño de la pantalla
+            Graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 100;
+            Graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 100;
+            Graphics.ApplyChanges();
+
+            var aspectRatio = GraphicsDevice.Viewport.AspectRatio;
+            var width = GraphicsDevice.Viewport.Width;
+            var height = GraphicsDevice.Viewport.Height;
+
+            Camera = new FreeCamera(aspectRatio, new Vector3(0,300f,200f) , new Point(width/2,height/2));
+            Camera.NearPlane = 1f;
+            Camera.FarPlane = 100000f;
+            Camera.FieldOfView = 400f;
+            Camera.UpDirection = Vector3.UnitY;
+            Camera.MovementSpeed = 500f;
+            
             
             ShipWorld = Matrix.Identity;
+            ShipWorld2 = Matrix.Identity;
+            IslandWorld1 = Matrix.Identity;
+            IslandWorld2 = Matrix.Identity;
+            IslandWorld3 = Matrix.Identity;
+
             ShipScale = Matrix.CreateScale(0.01f);
-            ShipPosition = Vector3.UnitY * 100f;
+            IslandScale = Matrix.CreateScale(0.02f);
+
+            ShipPosition = Vector3.UnitY * 200f;
+            ShipPosition2 = new Vector3(200f,200f,-200f);
+            IslandPosition1 = new Vector3(400, 200f, 400f);
 
             base.Initialize();
         }
@@ -69,7 +103,7 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
         protected override void LoadContent()
         {
             // Heightmap texture of the terrain.
-            var currentHeightmap = Content.Load<Texture2D>(ContentFolderTextures + "heightmaps/heightmap-3");
+            var currentHeightmap = Content.Load<Texture2D>(ContentFolderTextures + "heightmaps/heightmap");
 
             
             // Cambia el tamaño del mapa IMPORTANTE
@@ -89,10 +123,16 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             Effect.EnableDefaultLighting();
 
             Ship = Content.Load<Model>(ContentFolder3D + "ShipA/Ship");
+       
+            Island1 = Content.Load<Model>(ContentFolder3D + "Island1/Island1");
+            Island2 = Content.Load<Model>(ContentFolder3D + "Island2/Island2");
+            Island3 = Content.Load<Model>(ContentFolder3D + "Island3/Island3");
+
 
             ShipWorld = ShipScale * Matrix.CreateTranslation(ShipPosition);
-            
-            
+            ShipWorld2 = ShipScale * Matrix.CreateTranslation(ShipPosition2);
+            IslandWorld1 = IslandScale * Matrix.CreateTranslation(IslandPosition1);
+
             base.LoadContent();
         }
 
@@ -114,6 +154,10 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             GraphicsDevice.SetVertexBuffer(TerrainVertexBuffer);
             GraphicsDevice.Indices = TerrainIndexBuffer;
 
+            Ship.Draw(ShipWorld, Camera.View, Camera.Projection);
+            Ship.Draw(ShipWorld2, Camera.View, Camera.Projection);
+            Island1.Draw(IslandWorld1,Camera.View, Camera.Projection);
+
             // Render terrain.
             Effect.View = Camera.View;
             Effect.Projection = Camera.Projection;
@@ -124,9 +168,6 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
                 pass.Apply();
                 GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, PrimitiveCount);
             }
-
-            Ship.Draw(ShipWorld,Camera.View,Camera.Projection);
-            
 
             base.Draw(gameTime);
         }

@@ -36,7 +36,7 @@ public class Terrain:Game
         
         private Effect TilingEffect { get; set; }
         
-        private Camera Camera { get; set; }
+        private FreeCamera Camera { get; set; }
         
         
         public Terrain()

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BepuPhysics.Collidables;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TGC.MonoGame.Samples.Cameras;
 using TGC.MonoGame.Samples.Geometries;
@@ -40,9 +41,13 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
         private Matrix ShipWorld2 { get; set; }
         private Matrix ShipWorld3 { get; set; }
         private Matrix ShipWorld4 { get; set; }
+        
+        private Matrix ShipWorld5 { get; set; }
         private Matrix IslandWorld1 { get; set; }
         private Matrix IslandWorld2  { get; set; }
         private Matrix IslandWorld3 { get; set; }
+        
+        private Matrix IslandWorld4 { get; set; }
 
         // Matrices
         private Matrix ShipScale { get; set; }
@@ -53,9 +58,15 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
         private Vector3 ShipPosition2 { get; set; }
         private Vector3 ShipPosition3 { get; set; }
         private Vector3 ShipPosition4 { get; set; }
+        
+        private Vector3 ShipPosition5 { get; set; }
         private Vector3 IslandPosition1 { get; set; }
         private Vector3 IslandPosition2 { get; set; }
         private Vector3 IslandPosition3 { get; set; }
+        
+        private Vector3 IslandPosition4 { get; set; }
+        
+        
 
         // Prmitivas
         private CylinderPrimitive Cilindro { get; set; }
@@ -66,10 +77,27 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
         private Vector3 CilindroPosition3 { get; set; }
         private CylinderPrimitive Cilindro4 { get; set; }
         private Vector3 CilindroPosition4 { get; set; }
+        
+        private CylinderPrimitive Cilindro5 { get; set; }
+        
+        private Vector3 CilindroPosition5 { get; set; }
+
+        
+        
         private SpherePrimitive Sphere { get; set; }
         private Vector3 SpherePosition { get; set; }
         private SpherePrimitive Sphere2 { get; set; }
         private Vector3 SpherePosition2 { get; set; }
+        
+        private SpherePrimitive Sphere3 { get; set; }
+        private Vector3 SpherePosition3 { get; set; }
+        
+        private SpherePrimitive Sphere4 { get; set; }
+        private Vector3 SpherePosition4 { get; set; }
+        
+        
+        
+        
 
 
         // Triangle count in this case
@@ -109,9 +137,11 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             ShipWorld2 = Matrix.Identity;
             ShipWorld3 = Matrix.Identity;
             ShipWorld4 = Matrix.Identity;
+            ShipWorld5 = Matrix.Identity;
             IslandWorld1 = Matrix.Identity;
             IslandWorld2 = Matrix.Identity;
             IslandWorld3 = Matrix.Identity;
+            IslandWorld4 = Matrix.Identity;
 
             ShipScale = Matrix.CreateScale(0.01f);
             IslandScale = Matrix.CreateScale(0.04f);
@@ -120,9 +150,11 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             ShipPosition2 = new Vector3(0,200f,-200f);
             ShipPosition3 = new Vector3(200f, 200f, 200f);
             ShipPosition4 = new Vector3(-400f, 200f, -200f);
+            ShipPosition5 = new Vector3(600f, 200f, 300f);
             IslandPosition1 = new Vector3(800f, 200f, 800f);
             IslandPosition2 = new Vector3(-800f, 200f, 1000f);
             IslandPosition3 = new Vector3(800f, 200f, -800f);
+            IslandPosition4 = new Vector3(1200f, 200f, 300f);
 
             Cilindro = new CylinderPrimitive(GraphicsDevice, 100, 4, 32);
             CilindroPosition1 = new Vector3(-750f, 200f, 800f);
@@ -133,10 +165,19 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             Cilindro4 = new CylinderPrimitive(GraphicsDevice, 25, 4, 32);
             CilindroPosition4 = new Vector3(-600f, 200f, 700f);
 
+            Cilindro5 = new CylinderPrimitive(GraphicsDevice, 25, 4, 32);
+            CilindroPosition5 = new Vector3(1250f, 200f, 350f);
+
             Sphere = new SpherePrimitive(GraphicsDevice, 10, 32);
             SpherePosition = new Vector3(-700f, 200f, 850f);
             Sphere2 = new SpherePrimitive(GraphicsDevice, 10, 32);
             SpherePosition2 = new Vector3(-700f, 200f, 750f);
+
+            Sphere3 = new SpherePrimitive(GraphicsDevice, 10, 32);
+            SpherePosition3 = new Vector3(1225f, 200f, 325f);
+
+            Sphere4 = new SpherePrimitive(GraphicsDevice, 10, 32);
+            SpherePosition4 = new Vector3(1275f, 200f, 310f);
 
             base.Initialize();
         }
@@ -150,12 +191,32 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             
             // Cambia el tamaño del mapa IMPORTANTE
             var scaleXZ = 500f;
-            var scaleY = 0.1f;
+            var scaleY = 0.4f;
             CreateHeightMapMesh(currentHeightmap, scaleXZ, scaleY);
 
             // Terrain texture.
             TerrainTexture = Content.Load<Texture2D>(ContentFolderTextures + "heightmaps/terrain-texture-3");
 
+           
+
+            Ship = Content.Load<Model>(ContentFolder3D + "ShipA/Ship");
+       
+            Island1 = Content.Load<Model>(ContentFolder3D + "Island1/Island1");
+            Island2 = Content.Load<Model>(ContentFolder3D + "Island2/Island2");
+            Island3 = Content.Load<Model>(ContentFolder3D + "Island3/Island3");
+            
+
+
+            ShipWorld = ShipScale * Matrix.CreateTranslation(ShipPosition);
+            ShipWorld2 = ShipScale * Matrix.CreateTranslation(ShipPosition2);
+            ShipWorld3 = ShipScale * Matrix.CreateTranslation(ShipPosition3);
+            ShipWorld4 = ShipScale * Matrix.CreateTranslation(ShipPosition4);
+            ShipWorld5 = ShipScale * Matrix.CreateTranslation(ShipPosition5);
+            IslandWorld1 = IslandScale * Matrix.CreateTranslation(IslandPosition1);
+            IslandWorld2 = IslandScale * Matrix.CreateTranslation(IslandPosition2);
+            IslandWorld3 = IslandScale * Matrix.CreateTranslation(IslandPosition3);
+            IslandWorld4 = IslandScale * Matrix.CreateTranslation(IslandPosition4);
+            
             Effect = new BasicEffect(GraphicsDevice)
             {
                 World = Matrix.Identity,
@@ -163,21 +224,6 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
                 Texture = TerrainTexture
             };
             Effect.EnableDefaultLighting();
-
-            Ship = Content.Load<Model>(ContentFolder3D + "ShipA/Ship");
-       
-            Island1 = Content.Load<Model>(ContentFolder3D + "Island1/Island1");
-            Island2 = Content.Load<Model>(ContentFolder3D + "Island2/Island2");
-            Island3 = Content.Load<Model>(ContentFolder3D + "Island3/Island3");
-
-
-            ShipWorld = ShipScale * Matrix.CreateTranslation(ShipPosition);
-            ShipWorld2 = ShipScale * Matrix.CreateTranslation(ShipPosition2);
-            ShipWorld3 = ShipScale * Matrix.CreateTranslation(ShipPosition3);
-            ShipWorld4 = ShipScale * Matrix.CreateTranslation(ShipPosition4);
-            IslandWorld1 = IslandScale * Matrix.CreateTranslation(IslandPosition1);
-            IslandWorld2 = IslandScale * Matrix.CreateTranslation(IslandPosition2);
-            IslandWorld3 = IslandScale * Matrix.CreateTranslation(IslandPosition3);
 
             base.LoadContent();
         }
@@ -195,7 +241,7 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
         protected override void Draw(GameTime gameTime)
         {
             
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             GraphicsDevice.SetVertexBuffer(TerrainVertexBuffer);
             GraphicsDevice.Indices = TerrainIndexBuffer;
@@ -205,9 +251,11 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             Ship.Draw(ShipWorld2, Camera.View, Camera.Projection);
             Ship.Draw(ShipWorld3, Camera.View, Camera.Projection);
             Ship.Draw(ShipWorld4, Camera.View, Camera.Projection);
+            Ship.Draw(ShipWorld5,Camera.View,Camera.Projection);
             Island1.Draw(IslandWorld1,Camera.View, Camera.Projection);
             Island2.Draw(IslandWorld2, Camera.View, Camera.Projection);
             Island3.Draw(IslandWorld3, Camera.View, Camera.Projection);
+            Island2.Draw(IslandWorld4,Camera.View,Camera.Projection);
 
           
     
@@ -215,20 +263,26 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             Effect.View = Camera.View;
             Effect.Projection = Camera.Projection;
             
+            foreach (var pass in Effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, PrimitiveCount);
+            }
             
-            //foreach (var pass in Effect.CurrentTechnique.Passes)
-            //{
-            //    pass.Apply();
-            //    GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, PrimitiveCount);
-            //}
+           
 
             // Dibujamos primitivas
             DrawGeometry(Cilindro, CilindroPosition1, Camera.View, Camera.Projection);
             DrawGeometry(Cilindro2, CilindroPosition2, Camera.View, Camera.Projection);
             DrawGeometry(Cilindro3, CilindroPosition3, Camera.View, Camera.Projection);
             DrawGeometry(Cilindro4, CilindroPosition4, Camera.View, Camera.Projection);
+            DrawGeometry(Cilindro5,CilindroPosition5,Camera.View,Camera.Projection);
             DrawGeometry(Sphere, SpherePosition, Camera.View, Camera.Projection);
             DrawGeometry(Sphere2, SpherePosition2, Camera.View, Camera.Projection);
+            DrawGeometry(Sphere3,SpherePosition3,Camera.View,Camera.Projection);
+            DrawGeometry(Sphere4,ShipPosition4,Camera.View,Camera.Projection);
+            
+            
 
             base.Draw(gameTime);
         }

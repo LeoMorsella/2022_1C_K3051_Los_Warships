@@ -96,10 +96,10 @@ public class GameShips : Game
         
         private SpherePrimitive Sphere4 { get; set; }
         private Vector3 SpherePosition4 { get; set; }
+        private QuadPrimitive Quad { get; set; }
+        private Matrix FloorWorld { get; set; }
+        private Texture2D SeaTexture { get; set; }
         private Effect TilingEffect { get; set; }
-
-
-
 
 
     // Triangle count in this case
@@ -224,7 +224,7 @@ public class GameShips : Game
 
         TilingEffect = Content.Load<Effect>(ContentFolderEffects + "TextureTiling");
         TilingEffect.Parameters["Tiling"].SetValue(new Vector2(100f, 100f));
-        StonesTexture = Content.Load<Texture2D>(ContentFolderTextures + "sea-texture");
+        SeaTexture = Content.Load<Texture2D>(ContentFolderTextures + "sea-texture");
         Quad = new QuadPrimitive(GraphicsDevice);
 
         base.LoadContent();
@@ -254,7 +254,7 @@ public class GameShips : Game
         TilingEffect.CurrentTechnique = TilingEffect.Techniques["BaseTiling"];
         //TilingEffect.Parameters["Tiling"].SetValue(new Vector2(10f, 10f));
         TilingEffect.Parameters["WorldViewProjection"].SetValue(FloorWorld * viewProjection);
-        TilingEffect.Parameters["Texture"].SetValue(StonesTexture);
+        TilingEffect.Parameters["Texture"].SetValue(SeaTexture);
         Quad.Draw(TilingEffect);
 
         //Dibujamos modelos

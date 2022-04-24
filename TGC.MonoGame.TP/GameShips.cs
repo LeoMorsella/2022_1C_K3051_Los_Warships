@@ -45,14 +45,36 @@ public class GameShips : Game
         private Matrix ShipWorld4 { get; set; }
         
         private Matrix ShipWorld5 { get; set; }
+        private Matrix ShipWorld6 { get; set; }
+        private Matrix ShipWorld7 { get; set; }
+        private Matrix ShipWorld8 { get; set; }
         private Matrix IslandWorld1 { get; set; }
         private Matrix IslandWorld2  { get; set; }
         private Matrix IslandWorld3 { get; set; }
         
         private Matrix IslandWorld4 { get; set; }
+        private Matrix IslandWorld5 { get; set; }
+        private Matrix IslandWorld6 { get; set; }
+        private Matrix IslandWorld7 { get; set; }
+        private Matrix IslandWorld8 { get; set; }
+        private Matrix IslandWorld9 { get; set; }
+        private Matrix IslandWorld10 { get; set; }
+        private Matrix IslandWorld11 { get; set; }
+        private Matrix IslandWorld12 { get; set; }
+        private Matrix IslandWorld13 { get; set; }
+        private Matrix IslandWorld14 { get; set; }
+        private Matrix IslandWorld15 { get; set; }
+        private Matrix IslandWorld16 { get; set; }
+        private Matrix IslandWorld17 { get; set; }
+        private Matrix IslandWorld18 { get; set; }
+        private Matrix IslandWorld19 { get; set; }
+        private Matrix IslandWorld20 { get; set; }
+        
 
-        // Matrices
-        private Matrix ShipScale { get; set; }
+
+
+    // Matrices
+    private Matrix ShipScale { get; set; }
         private Matrix IslandScale { get; set; }
         
         // Positions
@@ -62,16 +84,33 @@ public class GameShips : Game
         private Vector3 ShipPosition4 { get; set; }
         
         private Vector3 ShipPosition5 { get; set; }
+        private Vector3 ShipPosition6 { get; set; }
+        private Vector3 ShipPosition7 { get; set; }
+        private Vector3 ShipPosition8 { get; set; }
+
         private Vector3 IslandPosition1 { get; set; }
         private Vector3 IslandPosition2 { get; set; }
         private Vector3 IslandPosition3 { get; set; }
         
         private Vector3 IslandPosition4 { get; set; }
-        
-        
-
-        // Prmitivas
-        private CylinderPrimitive Cilindro { get; set; }
+        private Vector3 IslandPosition5 { get; set; }
+        private Vector3 IslandPosition6 { get; set; }
+        private Vector3 IslandPosition7 { get; set; }
+        private Vector3 IslandPosition8 { get; set; }
+        private Vector3 IslandPosition9 { get; set; }
+        private Vector3 IslandPosition10 { get; set; }
+        private Vector3 IslandPosition11 { get; set; }
+        private Vector3 IslandPosition12 { get; set; }
+        private Vector3 IslandPosition13 { get; set; }
+        private Vector3 IslandPosition14 { get; set; }
+        private Vector3 IslandPosition15 { get; set; }
+        private Vector3 IslandPosition16 { get; set; }
+        private Vector3 IslandPosition17 { get; set; }
+        private Vector3 IslandPosition18 { get; set; }
+        private Vector3 IslandPosition19 { get; set; }
+        private Vector3 IslandPosition20 { get; set; }
+    // Prmitivas
+    private CylinderPrimitive Cilindro { get; set; }
         private Vector3 CilindroPosition1 { get; set; }
         private CylinderPrimitive Cilindro2 { get; set; }
         private Vector3 CilindroPosition2 { get; set; }
@@ -81,12 +120,17 @@ public class GameShips : Game
         private Vector3 CilindroPosition4 { get; set; }
         
         private CylinderPrimitive Cilindro5 { get; set; }
-        
         private Vector3 CilindroPosition5 { get; set; }
+        private CylinderPrimitive Cilindro6 { get; set; }
+        private Vector3 CilindroPosition6 { get; set; }
+        private CylinderPrimitive Cilindro7 { get; set; }
+        private Vector3 CilindroPosition7 { get; set; }
+        private CylinderPrimitive Cilindro8 { get; set; }
+        private Vector3 CilindroPosition8 { get; set; }
 
-        
-        
-        private SpherePrimitive Sphere { get; set; }
+
+
+    private SpherePrimitive Sphere { get; set; }
         private Vector3 SpherePosition { get; set; }
         private SpherePrimitive Sphere2 { get; set; }
         private Vector3 SpherePosition2 { get; set; }
@@ -96,6 +140,14 @@ public class GameShips : Game
         
         private SpherePrimitive Sphere4 { get; set; }
         private Vector3 SpherePosition4 { get; set; }
+        private SpherePrimitive Sphere5 { get; set; }
+        private Vector3 SpherePosition5 { get; set; }
+        private SpherePrimitive Sphere6 { get; set; }
+        private Vector3 SpherePosition6 { get; set; }
+        private SpherePrimitive Sphere7 { get; set; }
+        private Vector3 SpherePosition7 { get; set; }
+        private SpherePrimitive Sphere8 { get; set; }
+        private Vector3 SpherePosition8 { get; set; }
         private QuadPrimitive Quad { get; set; }
         private Matrix FloorWorld { get; set; }
         private Texture2D SeaTexture { get; set; }
@@ -140,10 +192,29 @@ public class GameShips : Game
             ShipWorld3 = Matrix.Identity;
             ShipWorld4 = Matrix.Identity;
             ShipWorld5 = Matrix.Identity;
+            ShipWorld6 = Matrix.Identity;
+            ShipWorld7 = Matrix.Identity;
+            ShipWorld8 = Matrix.Identity;
             IslandWorld1 = Matrix.Identity;
             IslandWorld2 = Matrix.Identity;
             IslandWorld3 = Matrix.Identity;
             IslandWorld4 = Matrix.Identity;
+            IslandWorld5 = Matrix.Identity;
+            IslandWorld6 = Matrix.Identity;
+            IslandWorld7 = Matrix.Identity;
+            IslandWorld8 = Matrix.Identity;
+            IslandWorld9 = Matrix.Identity;
+            IslandWorld10 = Matrix.Identity;
+            IslandWorld11 = Matrix.Identity;
+            IslandWorld12 = Matrix.Identity;
+            IslandWorld13 = Matrix.Identity;
+            IslandWorld14 = Matrix.Identity;
+            IslandWorld15 = Matrix.Identity;
+            IslandWorld16 = Matrix.Identity;
+            IslandWorld17 = Matrix.Identity;
+            IslandWorld18 = Matrix.Identity;
+            IslandWorld19 = Matrix.Identity;
+            IslandWorld20 = Matrix.Identity;
 
         ShipScale = Matrix.CreateScale(0.01f);
         IslandScale = Matrix.CreateScale(0.04f);
@@ -153,10 +224,30 @@ public class GameShips : Game
             ShipPosition3 = new Vector3(200f, 200f, 200f);
             ShipPosition4 = new Vector3(-400f, 200f, -200f);
             ShipPosition5 = new Vector3(600f, 200f, 300f);
+            ShipPosition6 = new Vector3(300f, 200f, 1000f);
+            ShipPosition7 = new Vector3(400f, 200f, 1500f);
+            ShipPosition8 = new Vector3(-500f, 200f, 1200f);
             IslandPosition1 = new Vector3(800f, 200f, 800f);
             IslandPosition2 = new Vector3(-800f, 200f, 1000f);
             IslandPosition3 = new Vector3(800f, 200f, -800f);
             IslandPosition4 = new Vector3(1200f, 200f, 300f);
+            IslandPosition5 = new Vector3(-1100f, 200f, 400f);
+            IslandPosition6 = new Vector3(-1000f, 200f, -900f);
+            IslandPosition7 = new Vector3(-1000f, 200f, -910f);
+            IslandPosition8 = new Vector3(-1000f, 200f, -920f);
+            IslandPosition9 = new Vector3(100f, 200f, 2000f);
+            IslandPosition10 = new Vector3(500f, 200f, 3000f);
+            IslandPosition11 = new Vector3(700f, 195f, 3500f);
+            IslandPosition12 = new Vector3(-800f, 195f, 2900f);
+        IslandPosition13 = new Vector3(-800f, 185f, 2500f);
+        IslandPosition14 = new Vector3(-300f, 195f, -1800f);
+        IslandPosition15 = new Vector3(-1100f,200f, -2500f);
+        IslandPosition16 = new Vector3(-2100f, 200f, -3000f);
+        IslandPosition17 = new Vector3(-2800f, 200f, -2200f);
+        IslandPosition18 = new Vector3(-1000f, 200f, -3500f);
+        IslandPosition19 = new Vector3(-1400f, 190f, -4100f);
+        IslandPosition20 = new Vector3(100f, 200f, -4500f);
+
 
         Cilindro = new CylinderPrimitive(GraphicsDevice, 100, 4, 32);
         CilindroPosition1 = new Vector3(-750f, 200f, 800f);
@@ -166,11 +257,17 @@ public class GameShips : Game
         CilindroPosition3 = new Vector3(-900f, 200f, 700f);
         Cilindro4 = new CylinderPrimitive(GraphicsDevice, 25, 4, 32);
         CilindroPosition4 = new Vector3(-600f, 200f, 700f);
+        Cilindro5 = new CylinderPrimitive(GraphicsDevice, 25, 4, 32);
+        CilindroPosition5 = new Vector3(1250f, 200f, 350f);
+        Cilindro6 = new CylinderPrimitive(GraphicsDevice, 25, 4, 32);
+        CilindroPosition6 = new Vector3(-1400f, 200f, -4100f);
+        Cilindro7 = new CylinderPrimitive(GraphicsDevice, 90, 4, 32);
+        CilindroPosition7 = new Vector3(-1300f, 200f, -3500f);
+        Cilindro8 = new CylinderPrimitive(GraphicsDevice, 25, 4, 32);
+        CilindroPosition8 = new Vector3(-2100f, 200f, -3000f);
 
-            Cilindro5 = new CylinderPrimitive(GraphicsDevice, 25, 4, 32);
-            CilindroPosition5 = new Vector3(1250f, 200f, 350f);
 
-            Sphere = new SpherePrimitive(GraphicsDevice, 10, 32);
+        Sphere = new SpherePrimitive(GraphicsDevice, 10, 32);
             SpherePosition = new Vector3(-700f, 200f, 850f);
             Sphere2 = new SpherePrimitive(GraphicsDevice, 10, 32);
             SpherePosition2 = new Vector3(-700f, 200f, 750f);
@@ -180,6 +277,18 @@ public class GameShips : Game
 
             Sphere4 = new SpherePrimitive(GraphicsDevice, 10, 32);
             SpherePosition4 = new Vector3(1275f, 200f, 310f);
+
+        Sphere5= new SpherePrimitive(GraphicsDevice, 10, 32);
+        SpherePosition5 = new Vector3(100f, 200f, -4500f);
+
+        Sphere6 = new SpherePrimitive(GraphicsDevice, 10, 32);
+        SpherePosition6 = new Vector3(-720f, 200f, -3600f);
+
+        Sphere7 = new SpherePrimitive(GraphicsDevice, 10, 32);
+        SpherePosition7 = new Vector3(-710f, 200f, -3620f);
+
+        Sphere8 = new SpherePrimitive(GraphicsDevice, 10, 32);
+        SpherePosition8 = new Vector3(-720f, 200f, -3640f);
 
         FloorWorld = Matrix.CreateScale(10000f, 0.1f, 10000f) * Matrix.CreateTranslation(0,185f,0);
 
@@ -216,11 +325,30 @@ public class GameShips : Game
             ShipWorld3 = ShipScale * Matrix.CreateTranslation(ShipPosition3);
             ShipWorld4 = ShipScale * Matrix.CreateTranslation(ShipPosition4);
             ShipWorld5 = ShipScale * Matrix.CreateTranslation(ShipPosition5);
+            ShipWorld6 = ShipScale * Matrix.CreateTranslation(ShipPosition6);
+            ShipWorld7 = ShipScale * Matrix.CreateTranslation(ShipPosition7);
+            ShipWorld8 = ShipScale * Matrix.CreateTranslation(ShipPosition8);
             IslandWorld1 = IslandScale * Matrix.CreateTranslation(IslandPosition1);
             IslandWorld2 = IslandScale * Matrix.CreateTranslation(IslandPosition2);
             IslandWorld3 = IslandScale * Matrix.CreateTranslation(IslandPosition3);
             IslandWorld4 = IslandScale * Matrix.CreateTranslation(IslandPosition4);
-            
+            IslandWorld5 = IslandScale * Matrix.CreateTranslation(IslandPosition5);
+            IslandWorld6 = IslandScale * Matrix.CreateTranslation(IslandPosition6);
+            IslandWorld7 = IslandScale * Matrix.CreateTranslation(IslandPosition7);
+            IslandWorld8 = IslandScale * Matrix.CreateTranslation(IslandPosition8);
+            IslandWorld9 = IslandScale * Matrix.CreateTranslation(IslandPosition9);
+            IslandWorld10 = IslandScale * Matrix.CreateTranslation(IslandPosition10);
+            IslandWorld11 = IslandScale * Matrix.CreateTranslation(IslandPosition11);
+            IslandWorld12 = IslandScale * Matrix.CreateTranslation(IslandPosition12);
+            IslandWorld13 = IslandScale * Matrix.CreateTranslation(IslandPosition13);
+            IslandWorld14 = IslandScale * Matrix.CreateTranslation(IslandPosition14);
+            IslandWorld15 = IslandScale * Matrix.CreateTranslation(IslandPosition15);
+            IslandWorld16 = IslandScale * Matrix.CreateTranslation(IslandPosition16);
+        IslandWorld17 = IslandScale * Matrix.CreateTranslation(IslandPosition17);
+        IslandWorld18 = IslandScale * Matrix.CreateTranslation(IslandPosition18);
+            IslandWorld19 = IslandScale * Matrix.CreateTranslation(IslandPosition19);
+            IslandWorld20 = IslandScale * Matrix.CreateTranslation(IslandPosition20); 
+
 
         TilingEffect = Content.Load<Effect>(ContentFolderEffects + "TextureTiling");
         TilingEffect.Parameters["Tiling"].SetValue(new Vector2(100f, 100f));
@@ -263,36 +391,64 @@ public class GameShips : Game
             Ship.Draw(ShipWorld3, Camera.View, Camera.Projection);
             Ship.Draw(ShipWorld4, Camera.View, Camera.Projection);
             Ship.Draw(ShipWorld5,Camera.View,Camera.Projection);
+            Ship.Draw(ShipWorld6, Camera.View, Camera.Projection);
+            Ship.Draw(ShipWorld7, Camera.View, Camera.Projection);
+            Ship.Draw(ShipWorld8, Camera.View, Camera.Projection);
             Island1.Draw(IslandWorld1,Camera.View, Camera.Projection);
             Island2.Draw(IslandWorld2, Camera.View, Camera.Projection);
             Island3.Draw(IslandWorld3, Camera.View, Camera.Projection);
             Island2.Draw(IslandWorld4,Camera.View,Camera.Projection);
+            Island1.Draw(IslandWorld5, Camera.View, Camera.Projection);
+            Island2.Draw(IslandWorld6, Camera.View, Camera.Projection);
+            Island1.Draw(IslandWorld7, Camera.View, Camera.Projection);
+            Island3.Draw(IslandWorld8, Camera.View, Camera.Projection);
+            Island3.Draw(IslandWorld9, Camera.View, Camera.Projection);
+            Island2.Draw(IslandWorld10, Camera.View, Camera.Projection);
+            Island1.Draw(IslandWorld11, Camera.View, Camera.Projection);
+            Island1.Draw(IslandWorld12, Camera.View, Camera.Projection);
+            Island1.Draw(IslandWorld13, Camera.View, Camera.Projection);
+            Island1.Draw(IslandWorld14, Camera.View, Camera.Projection);
+            Island3.Draw(IslandWorld15, Camera.View, Camera.Projection);
+            Island1.Draw(IslandWorld16, Camera.View, Camera.Projection);
+            Island3.Draw(IslandWorld17, Camera.View, Camera.Projection);
+            Island2.Draw(IslandWorld18, Camera.View, Camera.Projection);
+            Island1.Draw(IslandWorld19, Camera.View, Camera.Projection);
+            Island3.Draw(IslandWorld20, Camera.View, Camera.Projection);
+            
 
-      
+
+
 
         // Render terrain.
         //Effect.View = Camera.View;
         //Effect.Projection = Camera.Projection;
-        
-        
+
+
         //foreach (var pass in Effect.CurrentTechnique.Passes)
         //{
         //    pass.Apply();
         //    GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, PrimitiveCount);
         //}
 
-            // Dibujamos primitivas
-            DrawGeometry(Cilindro, CilindroPosition1, Camera.View, Camera.Projection);
+        // Dibujamos primitivas
+        DrawGeometry(Cilindro, CilindroPosition1, Camera.View, Camera.Projection);
             DrawGeometry(Cilindro2, CilindroPosition2, Camera.View, Camera.Projection);
             DrawGeometry(Cilindro3, CilindroPosition3, Camera.View, Camera.Projection);
             DrawGeometry(Cilindro4, CilindroPosition4, Camera.View, Camera.Projection);
             DrawGeometry(Cilindro5,CilindroPosition5,Camera.View,Camera.Projection);
+            DrawGeometry(Cilindro6,CilindroPosition6,Camera.View,Camera.Projection);
+            DrawGeometry(Cilindro7,CilindroPosition7,Camera.View,Camera.Projection);
+            DrawGeometry(Cilindro8,CilindroPosition8,Camera.View,Camera.Projection);
             DrawGeometry(Sphere, SpherePosition, Camera.View, Camera.Projection);
             DrawGeometry(Sphere2, SpherePosition2, Camera.View, Camera.Projection);
             DrawGeometry(Sphere3,SpherePosition3,Camera.View,Camera.Projection);
-            DrawGeometry(Sphere4,ShipPosition4,Camera.View,Camera.Projection);
-            
-            
+            DrawGeometry(Sphere4,SpherePosition4,Camera.View,Camera.Projection);
+            DrawGeometry(Sphere5, SpherePosition5, Camera.View, Camera.Projection);
+            DrawGeometry(Sphere6,SpherePosition6,Camera.View,Camera.Projection);
+            DrawGeometry(Sphere7,SpherePosition7,Camera.View,Camera.Projection);
+            DrawGeometry(Sphere8, SpherePosition8, Camera.View, Camera.Projection);
+
+
 
         base.Draw(gameTime);
     }

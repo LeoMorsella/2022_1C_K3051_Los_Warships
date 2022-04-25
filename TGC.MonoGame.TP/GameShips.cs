@@ -1,4 +1,5 @@
-﻿using BepuPhysics.Collidables;
+﻿using System;
+using BepuPhysics.Collidables;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TGC.MonoGame.Samples.Cameras;
@@ -43,15 +44,27 @@ public class GameShips : Game
         private Matrix ShipWorld2 { get; set; }
         private Matrix ShipWorld3 { get; set; }
         private Matrix ShipWorld4 { get; set; }
-        
         private Matrix ShipWorld5 { get; set; }
         private Matrix ShipWorld6 { get; set; }
         private Matrix ShipWorld7 { get; set; }
         private Matrix ShipWorld8 { get; set; }
+        private Matrix ShipWorld9 { get; set; }
+        private Matrix ShipWorld10 { get; set; }
+
+        private Matrix Ship2World { get; set; }
+        private Matrix Ship2World2 { get; set; }
+        private Matrix Ship2World3 { get; set; }
+        private Matrix Ship2World4 { get; set; }
+        private Matrix Ship2World5 { get; set; }
+        private Matrix Ship2World6 { get; set; }
+        private Matrix Ship2World7 { get; set; }
+        private Matrix Ship2World8 { get; set; }
+        private Matrix Ship2World9 { get; set; }
+        private Matrix Ship2World10 { get; set; }
+
         private Matrix IslandWorld1 { get; set; }
         private Matrix IslandWorld2  { get; set; }
         private Matrix IslandWorld3 { get; set; }
-        
         private Matrix IslandWorld4 { get; set; }
         private Matrix IslandWorld5 { get; set; }
         private Matrix IslandWorld6 { get; set; }
@@ -75,6 +88,7 @@ public class GameShips : Game
 
     // Matrices
     private Matrix ShipScale { get; set; }
+    private Matrix Ship2Scale { get; set; }
         private Matrix IslandScale { get; set; }
         
         // Positions
@@ -82,11 +96,23 @@ public class GameShips : Game
         private Vector3 ShipPosition2 { get; set; }
         private Vector3 ShipPosition3 { get; set; }
         private Vector3 ShipPosition4 { get; set; }
-        
         private Vector3 ShipPosition5 { get; set; }
         private Vector3 ShipPosition6 { get; set; }
         private Vector3 ShipPosition7 { get; set; }
         private Vector3 ShipPosition8 { get; set; }
+        private Vector3 ShipPosition9 { get; set; }
+        private Vector3 ShipPosition10 { get; set; }
+
+        private Vector3 Ship2Position { get; set; }
+        private Vector3 Ship2Position2 { get; set; }
+        private Vector3 Ship2Position3 { get; set; }
+        private Vector3 Ship2Position4 { get; set; }
+        private Vector3 Ship2Position5 { get; set; }
+        private Vector3 Ship2Position6 { get; set; }
+        private Vector3 Ship2Position7 { get; set; }
+        private Vector3 Ship2Position8 { get; set; }
+        private Vector3 Ship2Position9 { get; set; }
+        private Vector3 Ship2Position10 { get; set; }
 
         private Vector3 IslandPosition1 { get; set; }
         private Vector3 IslandPosition2 { get; set; }
@@ -110,44 +136,79 @@ public class GameShips : Game
         private Vector3 IslandPosition19 { get; set; }
         private Vector3 IslandPosition20 { get; set; }
     // Prmitivas
-    private CylinderPrimitive Cilindro { get; set; }
-        private Vector3 CilindroPosition1 { get; set; }
-        private CylinderPrimitive Cilindro2 { get; set; }
-        private Vector3 CilindroPosition2 { get; set; }
-        private CylinderPrimitive Cilindro3 { get; set; }
-        private Vector3 CilindroPosition3 { get; set; }
-        private CylinderPrimitive Cilindro4 { get; set; }
-        private Vector3 CilindroPosition4 { get; set; }
-        
-        private CylinderPrimitive Cilindro5 { get; set; }
-        private Vector3 CilindroPosition5 { get; set; }
-        private CylinderPrimitive Cilindro6 { get; set; }
-        private Vector3 CilindroPosition6 { get; set; }
-        private CylinderPrimitive Cilindro7 { get; set; }
-        private Vector3 CilindroPosition7 { get; set; }
-        private CylinderPrimitive Cilindro8 { get; set; }
-        private Vector3 CilindroPosition8 { get; set; }
+    private CylinderPrimitive Palmera { get; set; }
+        private Vector3 PalmeraPosition1 { get; set; }
+        private Vector3 PalmeraPosition2 { get; set; }
+        private Vector3 PalmeraPosition3 { get; set; }
+        private Vector3 PalmeraPosition4 { get; set; }
+        private Vector3 PalmeraPosition5 { get; set; }
+        private Vector3 PalmeraPosition6 { get; set; }
+        private Vector3 PalmeraPosition7 { get; set; }
+        private Vector3 PalmeraPosition8 { get; set; }
+        private Vector3 PalmeraPosition9 { get; set; }
+        private Vector3 PalmeraPosition10 { get; set; }
+        private Vector3 PalmeraPosition11 { get; set; }
+        private Vector3 PalmeraPosition12 { get; set; }
+        private Vector3 PalmeraPosition13 { get; set; }
+        private Vector3 PalmeraPosition14 { get; set; }
+        private Vector3 PalmeraPosition15 { get; set; }
+        private Vector3 PalmeraPosition16 { get; set; }
+        private Vector3 PalmeraPosition17 { get; set; }
+        private Vector3 PalmeraPosition18 { get; set; }
+        private Vector3 PalmeraPosition19 { get; set; }
+        private Vector3 PalmeraPosition20 { get; set; }
+        private Vector3 PalmeraPosition21 { get; set; }
+        private Vector3 PalmeraPosition22 { get; set; }
+        private Vector3 PalmeraPosition23 { get; set; }
+        private Vector3 PalmeraPosition24 { get; set; }
+        private Vector3 PalmeraPosition25 { get; set; }
+        private Vector3 PalmeraPosition26 { get; set; }
+        private Vector3 PalmeraPosition27 { get; set; }
+        private Vector3 PalmeraPosition28 { get; set; }
 
 
 
-    private SpherePrimitive Sphere { get; set; }
-        private Vector3 SpherePosition { get; set; }
-        private SpherePrimitive Sphere2 { get; set; }
-        private Vector3 SpherePosition2 { get; set; }
-        
-        private SpherePrimitive Sphere3 { get; set; }
-        private Vector3 SpherePosition3 { get; set; }
-        
-        private SpherePrimitive Sphere4 { get; set; }
-        private Vector3 SpherePosition4 { get; set; }
-        private SpherePrimitive Sphere5 { get; set; }
-        private Vector3 SpherePosition5 { get; set; }
-        private SpherePrimitive Sphere6 { get; set; }
-        private Vector3 SpherePosition6 { get; set; }
-        private SpherePrimitive Sphere7 { get; set; }
-        private Vector3 SpherePosition7 { get; set; }
-        private SpherePrimitive Sphere8 { get; set; }
-        private Vector3 SpherePosition8 { get; set; }
+    private SpherePrimitive Piedra { get; set; }
+        private Vector3 PiedraPosition1 { get; set; }
+        private Vector3 PiedraPosition2 { get; set; }
+        private Vector3 PiedraPosition3 { get; set; }
+        private Vector3 PiedraPosition4 { get; set; }
+        private Vector3 PiedraPosition5 { get; set; }
+        private Vector3 PiedraPosition6 { get; set; }
+        private Vector3 PiedraPosition7 { get; set; }
+        private Vector3 PiedraPosition8 { get; set; }
+        private Vector3 PiedraPosition9 { get; set; }
+        private Vector3 PiedraPosition10 { get; set; }
+        private Vector3 PiedraPosition11 { get; set; }
+        private Vector3 PiedraPosition12 { get; set; }
+        private Vector3 PiedraPosition13 { get; set; }
+        private Vector3 PiedraPosition14 { get; set; }
+        private Vector3 PiedraPosition15 { get; set; }
+        private Vector3 PiedraPosition16 { get; set; }
+        private Vector3 PiedraPosition17 { get; set; }
+        private Vector3 PiedraPosition18 { get; set; }
+        private Vector3 PiedraPosition19 { get; set; }
+        private Vector3 PiedraPosition20 { get; set; }
+        private Vector3 PiedraPosition21 { get; set; }
+        private Vector3 PiedraPosition22 { get; set; }
+        private Vector3 PiedraPosition23 { get; set; }
+        private Vector3 PiedraPosition24 { get; set; }
+        private Vector3 PiedraPosition25 { get; set; }
+        private Vector3 PiedraPosition26 { get; set; }
+        private Vector3 PiedraPosition27 { get; set; }
+        private Vector3 PiedraPosition28 { get; set; }
+        private Vector3 PiedraPosition29 { get; set; }
+        private Vector3 PiedraPosition30 { get; set; }
+        private Vector3 PiedraPosition31 { get; set; }
+        private Vector3 PiedraPosition32 { get; set; }
+        private Vector3 PiedraPosition33 { get; set; }
+        private Vector3 PiedraPosition34 { get; set; }
+        private Vector3 PiedraPosition35 { get; set; }
+        private Vector3 PiedraPosition36 { get; set; }
+        private Vector3 PiedraPosition37 { get; set; }
+        private Vector3 PiedraPosition38 { get; set; }
+
+
         private QuadPrimitive Quad { get; set; }
         private Matrix FloorWorld { get; set; }
         private Texture2D SeaTexture { get; set; }
@@ -180,10 +241,12 @@ public class GameShips : Game
         var width = GraphicsDevice.Viewport.Width;
         var height = GraphicsDevice.Viewport.Height;
 
-            Camera = new FreeCamera(aspectRatio, new Vector3(0,300f,200f) , new Point(width/2,height/2));
-            Camera.NearPlane = 1f;
-            Camera.FarPlane = 100000000000f;
-            Camera.FieldOfView = MathHelper.ToRadians(60f);
+            //Camera = new FreeCamera(aspectRatio, new Vector3(0,300f,200f) , new Point(width/2,height/2));
+            Camera = new FreeCamera(aspectRatio, new Vector3(1000f,800f,3000f) , new Point(width/2,height/2));
+            var nearPlane = 1f;
+            var farPlane = 8000f;
+            var fieldOfView = MathHelper.ToRadians(60f);
+            Camera.BuildProjection(aspectRatio, nearPlane, farPlane, fieldOfView);
             Camera.MovementSpeed = 500f;
             
             
@@ -217,6 +280,7 @@ public class GameShips : Game
             IslandWorld20 = Matrix.Identity;
 
         ShipScale = Matrix.CreateScale(0.01f);
+        Ship2Scale = Matrix.CreateScale(0.1f);
         IslandScale = Matrix.CreateScale(0.04f);
 
             ShipPosition = Vector3.UnitY * 200f;
@@ -227,6 +291,18 @@ public class GameShips : Game
             ShipPosition6 = new Vector3(300f, 200f, 1000f);
             ShipPosition7 = new Vector3(400f, 200f, 1500f);
             ShipPosition8 = new Vector3(-500f, 200f, 1200f);
+            ShipPosition9 = new Vector3(-300f, 200f, 500f);
+            ShipPosition10 = new Vector3(100f, 200f, 700f);
+            Ship2Position = new Vector3(2000f, 200f, 0f);
+            Ship2Position2 = new Vector3(2000f,200f,-200f);
+            Ship2Position3 = new Vector3(2200f, 200f, 200f);
+            Ship2Position4 = new Vector3(1600f, 200f, -200f);
+            Ship2Position5 = new Vector3(2600f, 200f, 300f);
+            Ship2Position6 = new Vector3(2300f, 200f, 1000f);
+            Ship2Position7 = new Vector3(2400f, 200f, 1500f);
+            Ship2Position8 = new Vector3(1500f, 200f, 1200f);
+            Ship2Position9 = new Vector3(1700f, 200f, 500f);
+            Ship2Position10 = new Vector3(2100f, 200f, 700f);
             IslandPosition1 = new Vector3(800f, 200f, 800f);
             IslandPosition2 = new Vector3(-800f, 200f, 1000f);
             IslandPosition3 = new Vector3(800f, 200f, -800f);
@@ -248,47 +324,90 @@ public class GameShips : Game
         IslandPosition19 = new Vector3(-1400f, 190f, -4100f);
         IslandPosition20 = new Vector3(100f, 200f, -4500f);
 
+        /* offset para set de palmeras y piedras para ubicar en funcion a un punto */
+        var offsetPalmera1 = new Vector3(0, 0, 100f);
+        var offsetPalmera2 = new Vector3(100f, 0, 50f);
+        var offsetPalmera3 = new Vector3(-50f, 0, -50f);
+        var offsetPalmera4 = new Vector3(30f, 0, -10f);
+        var offsetPiedra1 = new Vector3(0f, 10f, 20f);
+        var offsetPiedra2 = new Vector3(50f, 10f, 0f);
+        var offsetPiedra3 = new Vector3(0f, 10f, -50f);
+        var offsetPiedra4 = new Vector3(-20f, 10f, 0f);
+        var offsetPiedra5 = new Vector3(-50f, 10f, 50f);
+        var offsetPiedra6 = new Vector3(50f, 10f, 50f);
 
-        Cilindro = new CylinderPrimitive(GraphicsDevice, 100, 4, 32);
-        CilindroPosition1 = new Vector3(-750f, 200f, 800f);
-        Cilindro2 = new CylinderPrimitive(GraphicsDevice, 25, 4, 32);
-        CilindroPosition2 = new Vector3(-600f, 200f, 900f);
-        Cilindro3 = new CylinderPrimitive(GraphicsDevice, 25, 4, 32);
-        CilindroPosition3 = new Vector3(-900f, 200f, 700f);
-        Cilindro4 = new CylinderPrimitive(GraphicsDevice, 25, 4, 32);
-        CilindroPosition4 = new Vector3(-600f, 200f, 700f);
-        Cilindro5 = new CylinderPrimitive(GraphicsDevice, 25, 4, 32);
-        CilindroPosition5 = new Vector3(1250f, 200f, 350f);
-        Cilindro6 = new CylinderPrimitive(GraphicsDevice, 25, 4, 32);
-        CilindroPosition6 = new Vector3(-1400f, 200f, -4100f);
-        Cilindro7 = new CylinderPrimitive(GraphicsDevice, 90, 4, 32);
-        CilindroPosition7 = new Vector3(-1300f, 200f, -3500f);
-        Cilindro8 = new CylinderPrimitive(GraphicsDevice, 25, 4, 32);
-        CilindroPosition8 = new Vector3(-2100f, 200f, -3000f);
+        Palmera = new CylinderPrimitive(GraphicsDevice, 100, 4, 32);
+        PalmeraPosition1 = new Vector3(-750f, 200f, 800f);
+        PalmeraPosition2 = new Vector3(-600f, 200f, 900f);
+        PalmeraPosition3 = new Vector3(-900f, 200f, 700f);
+        PalmeraPosition4 = new Vector3(-600f, 200f, 700f);
+        PalmeraPosition5 = new Vector3(1250f, 200f, 350f);
+        PalmeraPosition6 = new Vector3(-1400f, 200f, -4100f);
+        PalmeraPosition7 = new Vector3(-1300f, 200f, -3500f);
+        PalmeraPosition8 = new Vector3(-2100f, 200f, -3000f);
+        
+        PalmeraPosition9 = IslandPosition1 + offsetPalmera1;
+        PalmeraPosition10 = IslandPosition1 + offsetPalmera2;
+        PalmeraPosition11 = IslandPosition1 + offsetPalmera3;
+        PalmeraPosition12 = IslandPosition1 + offsetPalmera4;
+        PalmeraPosition13 = IslandPosition11 + offsetPalmera1;
+        PalmeraPosition14 = IslandPosition11 + offsetPalmera2;
+        PalmeraPosition15 = IslandPosition11 + offsetPalmera3;
+        PalmeraPosition16 = IslandPosition11 + offsetPalmera4;
+        PalmeraPosition17 = IslandPosition14 + offsetPalmera1;
+        PalmeraPosition18 = IslandPosition14 + offsetPalmera2;
+        PalmeraPosition19 = IslandPosition14 + offsetPalmera3;
+        PalmeraPosition20 = IslandPosition14 + offsetPalmera4;
+        PalmeraPosition21 = IslandPosition17 + offsetPalmera1;
+        PalmeraPosition22 = IslandPosition17 + offsetPalmera2;
+        PalmeraPosition23 = IslandPosition17 + offsetPalmera3;
+        PalmeraPosition24 = IslandPosition17 + offsetPalmera4;
+        PalmeraPosition25 = IslandPosition12 + offsetPalmera1;
+        PalmeraPosition26 = IslandPosition12 + offsetPalmera2;
+        PalmeraPosition27 = IslandPosition12 + offsetPalmera3;
+        PalmeraPosition28 = IslandPosition12 + offsetPalmera4;
 
 
-        Sphere = new SpherePrimitive(GraphicsDevice, 10, 32);
-            SpherePosition = new Vector3(-700f, 200f, 850f);
-            Sphere2 = new SpherePrimitive(GraphicsDevice, 10, 32);
-            SpherePosition2 = new Vector3(-700f, 200f, 750f);
-
-            Sphere3 = new SpherePrimitive(GraphicsDevice, 10, 32);
-            SpherePosition3 = new Vector3(1225f, 200f, 325f);
-
-            Sphere4 = new SpherePrimitive(GraphicsDevice, 10, 32);
-            SpherePosition4 = new Vector3(1275f, 200f, 310f);
-
-        Sphere5= new SpherePrimitive(GraphicsDevice, 10, 32);
-        SpherePosition5 = new Vector3(100f, 200f, -4500f);
-
-        Sphere6 = new SpherePrimitive(GraphicsDevice, 10, 32);
-        SpherePosition6 = new Vector3(-720f, 200f, -3600f);
-
-        Sphere7 = new SpherePrimitive(GraphicsDevice, 10, 32);
-        SpherePosition7 = new Vector3(-710f, 200f, -3620f);
-
-        Sphere8 = new SpherePrimitive(GraphicsDevice, 10, 32);
-        SpherePosition8 = new Vector3(-720f, 200f, -3640f);
+        Piedra = new SpherePrimitive(GraphicsDevice, 10, 32);
+            PiedraPosition1 = new Vector3(-700f, 200f, 850f);
+            PiedraPosition2 = new Vector3(-700f, 200f, 750f);
+            PiedraPosition3 = new Vector3(1225f, 200f, 325f);
+            PiedraPosition4 = new Vector3(1275f, 200f, 310f);
+        PiedraPosition5 = new Vector3(100f, 200f, -4500f);
+        PiedraPosition6 = new Vector3(-720f, 200f, -3600f);
+        PiedraPosition7 = new Vector3(-710f, 200f, -3620f);
+        PiedraPosition8 = new Vector3(-720f, 200f, -3640f);
+        
+        PiedraPosition9 = IslandPosition1 + offsetPiedra1;
+        PiedraPosition10 = IslandPosition1 + offsetPiedra2;
+        PiedraPosition11 = IslandPosition1 + offsetPiedra3;
+        PiedraPosition12 = IslandPosition1 + offsetPiedra4;
+        PiedraPosition13 = IslandPosition1 + offsetPiedra5;
+        PiedraPosition14 = IslandPosition1 + offsetPiedra6;
+        PiedraPosition15 = IslandPosition11 + offsetPiedra1;
+        PiedraPosition16 = IslandPosition11 + offsetPiedra2;
+        PiedraPosition17 = IslandPosition11 + offsetPiedra3;
+        PiedraPosition18 = IslandPosition11 + offsetPiedra4;
+        PiedraPosition19 = IslandPosition11 + offsetPiedra5;
+        PiedraPosition20 = IslandPosition11 + offsetPiedra6;
+        PiedraPosition21 = IslandPosition14 + offsetPiedra1;
+        PiedraPosition22 = IslandPosition14 + offsetPiedra2;
+        PiedraPosition23 = IslandPosition14 + offsetPiedra3;
+        PiedraPosition24 = IslandPosition14 + offsetPiedra4;
+        PiedraPosition25 = IslandPosition14 + offsetPiedra5;
+        PiedraPosition26 = IslandPosition14 + offsetPiedra6;
+        PiedraPosition27 = IslandPosition17 + offsetPiedra1;
+        PiedraPosition28 = IslandPosition17 + offsetPiedra2;
+        PiedraPosition29 = IslandPosition17 + offsetPiedra3;
+        PiedraPosition30 = IslandPosition17 + offsetPiedra4;
+        PiedraPosition31 = IslandPosition17 + offsetPiedra5;
+        PiedraPosition32 = IslandPosition17 + offsetPiedra6;
+        PiedraPosition33 = IslandPosition12 + offsetPiedra1;
+        PiedraPosition34 = IslandPosition12 + offsetPiedra2;
+        PiedraPosition35 = IslandPosition12 + offsetPiedra3;
+        PiedraPosition36 = IslandPosition12 + offsetPiedra4;
+        PiedraPosition37 = IslandPosition12 + offsetPiedra5;
+        PiedraPosition38 = IslandPosition12 + offsetPiedra6;
 
         FloorWorld = Matrix.CreateScale(10000f, 0.1f, 10000f) * Matrix.CreateTranslation(0,185f,0);
 
@@ -313,6 +432,7 @@ public class GameShips : Game
            
 
             Ship = Content.Load<Model>(ContentFolder3D + "ShipA/Ship");
+            Ship2 = Content.Load<Model>(ContentFolder3D + "ShipB/Ship");
        
             Island1 = Content.Load<Model>(ContentFolder3D + "Island1/Island1");
             Island2 = Content.Load<Model>(ContentFolder3D + "Island2/Island2");
@@ -328,6 +448,18 @@ public class GameShips : Game
             ShipWorld6 = ShipScale * Matrix.CreateTranslation(ShipPosition6);
             ShipWorld7 = ShipScale * Matrix.CreateTranslation(ShipPosition7);
             ShipWorld8 = ShipScale * Matrix.CreateTranslation(ShipPosition8);
+            ShipWorld9 = ShipScale * Matrix.CreateTranslation(ShipPosition9);
+            ShipWorld10 = ShipScale * Matrix.CreateTranslation(ShipPosition10);
+            Ship2World = Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position);
+            Ship2World2 = Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position2);
+            Ship2World3 = Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position3);
+            Ship2World4 = Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position4);
+            Ship2World5 = Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position5);
+            Ship2World6 = Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position6);
+            Ship2World7 = Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position7);
+            Ship2World8 = Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position8);
+            Ship2World9 = Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position9);
+            Ship2World10 = Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position10);
             IslandWorld1 = IslandScale * Matrix.CreateTranslation(IslandPosition1);
             IslandWorld2 = IslandScale * Matrix.CreateTranslation(IslandPosition2);
             IslandWorld3 = IslandScale * Matrix.CreateTranslation(IslandPosition3);
@@ -351,7 +483,7 @@ public class GameShips : Game
 
 
         TilingEffect = Content.Load<Effect>(ContentFolderEffects + "TextureTiling");
-        TilingEffect.Parameters["Tiling"].SetValue(new Vector2(100f, 100f));
+        TilingEffect.Parameters["Tiling"].SetValue(new Vector2(80f, 80f));
         SeaTexture = Content.Load<Texture2D>(ContentFolderTextures + "sea-texture");
         Quad = new QuadPrimitive(GraphicsDevice);
 
@@ -394,6 +526,18 @@ public class GameShips : Game
             Ship.Draw(ShipWorld6, Camera.View, Camera.Projection);
             Ship.Draw(ShipWorld7, Camera.View, Camera.Projection);
             Ship.Draw(ShipWorld8, Camera.View, Camera.Projection);
+            Ship.Draw(ShipWorld9, Camera.View, Camera.Projection);
+            Ship.Draw(ShipWorld10, Camera.View, Camera.Projection);
+            Ship2.Draw(Ship2World, Camera.View, Camera.Projection);
+            Ship2.Draw(Ship2World2, Camera.View, Camera.Projection);
+            Ship2.Draw(Ship2World3, Camera.View, Camera.Projection);
+            Ship2.Draw(Ship2World4, Camera.View, Camera.Projection);
+            Ship2.Draw(Ship2World5, Camera.View, Camera.Projection);
+            Ship2.Draw(Ship2World6, Camera.View, Camera.Projection);
+            Ship2.Draw(Ship2World7, Camera.View, Camera.Projection);
+            Ship2.Draw(Ship2World8, Camera.View, Camera.Projection);
+            Ship2.Draw(Ship2World9, Camera.View, Camera.Projection);
+            Ship2.Draw(Ship2World10, Camera.View, Camera.Projection);
             Island1.Draw(IslandWorld1,Camera.View, Camera.Projection);
             Island2.Draw(IslandWorld2, Camera.View, Camera.Projection);
             Island3.Draw(IslandWorld3, Camera.View, Camera.Projection);
@@ -431,22 +575,73 @@ public class GameShips : Game
         //}
 
         // Dibujamos primitivas
-        DrawGeometry(Cilindro, CilindroPosition1, Camera.View, Camera.Projection);
-            DrawGeometry(Cilindro2, CilindroPosition2, Camera.View, Camera.Projection);
-            DrawGeometry(Cilindro3, CilindroPosition3, Camera.View, Camera.Projection);
-            DrawGeometry(Cilindro4, CilindroPosition4, Camera.View, Camera.Projection);
-            DrawGeometry(Cilindro5,CilindroPosition5,Camera.View,Camera.Projection);
-            DrawGeometry(Cilindro6,CilindroPosition6,Camera.View,Camera.Projection);
-            DrawGeometry(Cilindro7,CilindroPosition7,Camera.View,Camera.Projection);
-            DrawGeometry(Cilindro8,CilindroPosition8,Camera.View,Camera.Projection);
-            DrawGeometry(Sphere, SpherePosition, Camera.View, Camera.Projection);
-            DrawGeometry(Sphere2, SpherePosition2, Camera.View, Camera.Projection);
-            DrawGeometry(Sphere3,SpherePosition3,Camera.View,Camera.Projection);
-            DrawGeometry(Sphere4,SpherePosition4,Camera.View,Camera.Projection);
-            DrawGeometry(Sphere5, SpherePosition5, Camera.View, Camera.Projection);
-            DrawGeometry(Sphere6,SpherePosition6,Camera.View,Camera.Projection);
-            DrawGeometry(Sphere7,SpherePosition7,Camera.View,Camera.Projection);
-            DrawGeometry(Sphere8, SpherePosition8, Camera.View, Camera.Projection);
+        DrawGeometry(Palmera, PalmeraPosition1, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition2, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition3, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition4, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition5, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition6, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition7, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition8, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition9, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition10, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition11, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition12, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition13, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition14, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition15, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition16, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition17, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition18, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition19, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition20, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition21, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition22, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition23, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition24, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition25, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition26, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition27, Camera.View, Camera.Projection);
+            DrawGeometry(Palmera, PalmeraPosition28, Camera.View, Camera.Projection);
+            
+            DrawGeometry(Piedra, PiedraPosition1, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition2, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition3, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition4, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition5, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition6, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition7, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition8, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition9, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition10, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition11, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition12, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition13, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition14, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition15, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition16, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition17, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition18, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition19, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition20, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition21, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition22, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition23, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition24, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition25, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition26, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition27, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition28, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition29, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition30, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition31, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition32, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition33, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition34, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition35, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition36, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition37, Camera.View, Camera.Projection);
+            DrawGeometry(Piedra, PiedraPosition38, Camera.View, Camera.Projection);
 
 
 

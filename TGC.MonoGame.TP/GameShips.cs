@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BepuPhysics.Collidables;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -28,7 +29,7 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
 
 
         private GraphicsDeviceManager Graphics { get; }
-        private BasicEffect Effect { get; set; }
+        private Effect GenericEffect { get; set; }
         private Texture2D TerrainTexture { get; set; }
         private VertexBuffer TerrainVertexBuffer { get; set; }
         private IndexBuffer TerrainIndexBuffer { get; set; }
@@ -212,6 +213,13 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
         private Matrix FloorWorld { get; set; }
         private Texture2D SeaTexture { get; set; }
         private Effect TilingEffect { get; set; }
+
+        // Listas de texturas
+        private List<Texture2D> TexturesShipA { get; set; }
+        private List<Texture2D> TexturesShipB { get; set; }
+        private List<Texture2D> TexturesIsland1 { get; set; }
+        private List<Texture2D> TexturesIsland2 { get; set; }
+        private List<Texture2D> TexturesIsland3 { get; set; }
 
         // Triangle count in this case
         private int PrimitiveCount { get; set; }
@@ -449,8 +457,85 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             IslandWorld19 = IslandScale * Matrix.CreateTranslation(IslandPosition19);
             IslandWorld20 = IslandScale * Matrix.CreateTranslation(IslandPosition20);
 
-
+            
             TilingEffect = Content.Load<Effect>(ContentFolderEffects + "TextureTiling");
+            GenericEffect = Content.Load<Effect>(ContentFolderEffects + "BasicShader");
+
+            TexturesShipA = new List<Texture2D>();
+            TexturesShipB = new List<Texture2D>();
+            TexturesIsland1 = new List<Texture2D>();
+            TexturesIsland2 = new List<Texture2D>();
+            TexturesIsland3 = new List<Texture2D>();
+            // Asigno el efecto que cargue a cada parte del mesh.
+            // Un modelo puede tener mas de 1 mesh internamente.
+            foreach (var mesh in Ship.Meshes)
+                // Un mesh puede tener mas de 1 mesh part (cada 1 puede tener su propio efecto).
+                foreach (var meshPart in mesh.MeshParts)
+                {
+                    var basicEffect = ((BasicEffect)meshPart.Effect);
+                    if (basicEffect.Texture != null)
+                    {
+                        TexturesShipA.Add(basicEffect.Texture);
+                    }
+                    meshPart.Effect = GenericEffect;
+                }
+
+            // Asigno el efecto que cargue a cada parte del mesh.
+            // Un modelo puede tener mas de 1 mesh internamente.
+            foreach (var mesh in Ship2.Meshes)
+                // Un mesh puede tener mas de 1 mesh part (cada 1 puede tener su propio efecto).
+                foreach (var meshPart in mesh.MeshParts)
+                {
+                    var basicEffect = ((BasicEffect)meshPart.Effect);
+                    if (basicEffect.Texture != null)
+                    {
+                        TexturesShipB.Add(basicEffect.Texture);
+                    }
+                    meshPart.Effect = GenericEffect;
+                }
+
+            // Asigno el efecto que cargue a cada parte del mesh.
+            // Un modelo puede tener mas de 1 mesh internamente.
+            foreach (var mesh in Island1.Meshes)
+                // Un mesh puede tener mas de 1 mesh part (cada 1 puede tener su propio efecto).
+                foreach (var meshPart in mesh.MeshParts)
+                {
+                    var basicEffect = ((BasicEffect)meshPart.Effect);
+                    if (basicEffect.Texture != null)
+                    {
+                        TexturesIsland1.Add(basicEffect.Texture);
+                    }
+                    meshPart.Effect = GenericEffect;
+                }
+
+            // Asigno el efecto que cargue a cada parte del mesh.
+            // Un modelo puede tener mas de 1 mesh internamente.
+            foreach (var mesh in Island2.Meshes)
+                // Un mesh puede tener mas de 1 mesh part (cada 1 puede tener su propio efecto).
+                foreach (var meshPart in mesh.MeshParts)
+                {
+                    var basicEffect = ((BasicEffect)meshPart.Effect);
+                    if (basicEffect.Texture != null)
+                    {
+                        TexturesIsland2.Add(basicEffect.Texture);
+                    }
+                    meshPart.Effect = GenericEffect;
+                }
+
+            // Asigno el efecto que cargue a cada parte del mesh.
+            // Un modelo puede tener mas de 1 mesh internamente.
+            foreach (var mesh in Island3.Meshes)
+                // Un mesh puede tener mas de 1 mesh part (cada 1 puede tener su propio efecto).
+                foreach (var meshPart in mesh.MeshParts)
+                {
+                    var basicEffect = ((BasicEffect)meshPart.Effect);
+                    if (basicEffect.Texture != null)
+                    {
+                        TexturesIsland3.Add(basicEffect.Texture);
+                    }
+                    meshPart.Effect = GenericEffect;
+                }
+
             TilingEffect.Parameters["Tiling"].SetValue(new Vector2(80f, 80f));
             SeaTexture = Content.Load<Texture2D>(ContentFolderTextures + "sea-texture");
             Quad = new QuadPrimitive(GraphicsDevice);
@@ -485,8 +570,127 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             TilingEffect.Parameters["Texture"].SetValue(SeaTexture);
             Quad.Draw(TilingEffect);
 
+            // Para dibujar le modelo necesitamos pasarle informacion que el efecto esta esperando.
+            GenericEffect.Parameters["View"].SetValue(Camera.View);
+            GenericEffect.Parameters["Projection"].SetValue(Camera.Projection);
+            //GenericEffect.Parameters["DiffuseColor"].SetValue(Color.DarkBlue.ToVector3());
+            var index = 0;
+            //Aplico el efecto basico para el modelo ShipA, tiene problemas con la organización de sus mesh part rotación y posición
+            foreach (var mesh in Ship.Meshes)
+            {
+                if (TexturesShipA[index] != null)
+                {
+                    GenericEffect.Parameters["ModelTexture"].SetValue(TexturesShipA[index]);
+                }
+                GenericEffect.Parameters["World"].SetValue(ShipWorld);
+                mesh.Draw();
+                index++;
+            }
+            index = 0;
+            //Aplico el efecto basico para el modelo ShipB
+            foreach (var mesh in Ship2.Meshes)
+            {
+                if (TexturesShipB[index] != null)
+                {
+                    GenericEffect.Parameters["ModelTexture"].SetValue(TexturesShipB[index]);
+                }
+                GenericEffect.Parameters["World"].SetValue(Ship2World);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(Ship2World2);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(Ship2World3);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(Ship2World4);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(Ship2World5);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(Ship2World6);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(Ship2World7);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(Ship2World8);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(Ship2World9);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(Ship2World10);
+                mesh.Draw();
+                index++;
+            }
+
+            index = 0;
+            //Aplico el efecto basico para el modelo Island 1
+            foreach (var mesh in Island1.Meshes)
+            {
+                if (TexturesIsland1[index] != null)
+                {
+                    GenericEffect.Parameters["ModelTexture"].SetValue(TexturesIsland1[index]);
+                }
+                GenericEffect.Parameters["World"].SetValue(IslandWorld1);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(IslandWorld5);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(IslandWorld7);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(IslandWorld11);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(IslandWorld12);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(IslandWorld13);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(IslandWorld14);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(IslandWorld16);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(IslandWorld19);
+                mesh.Draw();
+                index++;
+            }
+            index = 0;
+            /*
+            //Aplico el efecto basico para el modelo Island2 y Island3, tiene problemas con la organización de sus mesh part rotación y escala 
+
+            foreach (var mesh in Island2.Meshes)
+            {
+                if (TexturesIsland2[index] != null)
+                {
+                    GenericEffect.Parameters["ModelTexture"].SetValue(TexturesIsland2[index]);
+                }
+                GenericEffect.Parameters["World"].SetValue(IslandWorld2);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(IslandWorld4);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(IslandWorld6);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(IslandWorld10);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(IslandWorld18);
+                mesh.Draw();
+                index++;
+            }
+            index = 0;
+            /*
+            foreach (var mesh in Island3.Meshes)
+            {
+                if (TexturesIsland3[index] != null)
+                {
+                    GenericEffect.Parameters["ModelTexture"].SetValue(TexturesIsland3[index]);
+                }
+                GenericEffect.Parameters["World"].SetValue(IslandWorld3);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(IslandWorld8);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(IslandWorld9);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(IslandWorld15);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(IslandWorld17);
+                mesh.Draw();
+                GenericEffect.Parameters["World"].SetValue(IslandWorld20);
+                mesh.Draw();
+                index++;
+            }*/
             //Dibujamos modelos
-            Ship.Draw(ShipWorld, Camera.View, Camera.Projection);
+            /*Ship.Draw(ShipWorld, Camera.View, Camera.Projection);
             Ship.Draw(ShipWorld2, Camera.View, Camera.Projection);
             Ship.Draw(ShipWorld3, Camera.View, Camera.Projection);
             Ship.Draw(ShipWorld4, Camera.View, Camera.Projection);
@@ -525,7 +729,7 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             Island3.Draw(IslandWorld17, Camera.View, Camera.Projection);
             Island2.Draw(IslandWorld18, Camera.View, Camera.Projection);
             Island1.Draw(IslandWorld19, Camera.View, Camera.Projection);
-            Island3.Draw(IslandWorld20, Camera.View, Camera.Projection);
+            Island3.Draw(IslandWorld20, Camera.View, Camera.Projection);*/
 
             // Dibujamos primitivas
             DrawGeometry(Palmera, PalmeraPosition1, Camera.View, Camera.Projection);

@@ -12,6 +12,15 @@
 // Programming guide for HLSL - https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-pguide
 // Reference for HLSL - https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-reference
 // HLSL Semantics - https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-semantics
+texture ModelTexture;
+sampler2D TextureSampler = sampler_state
+{
+    Texture = (ModelTexture);
+    MagFilter = Linear;
+    MinFilter = Linear;
+    AddressU = Clamp;
+    AddressV = Clamp;
+};
 
 float4x4 World;
 float4x4 View;
@@ -24,11 +33,13 @@ float Time = 0;
 struct VertexShaderInput
 {
 	float4 Position : POSITION0;
+    float2 TexturesCoordinates : TEXCOORD0;
 };
 
 struct VertexShaderOutput
 {
 	float4 Position : SV_POSITION;
+    float2 TexturesCoordinates : TEXCOORD0;
 };
 
 VertexShaderOutput MainVS(in VertexShaderInput input)
@@ -41,13 +52,16 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
     float4 viewPosition = mul(worldPosition, View);	
 	// View space to Projection space
     output.Position = mul(viewPosition, Projection);
+    
+    output.TexturesCoordinates = input.TexturesCoordinates;
 
     return output;
 }
 
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
-    return float4(DiffuseColor, 1.0);
+    float4 texturesCoordinates = tex2D(TextureSampler, input.TexturesCoordinates);
+    return texturesCoordinates;
 }
 
 technique BasicColorDrawing

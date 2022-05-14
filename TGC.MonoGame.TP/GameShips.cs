@@ -414,49 +414,6 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             Island2 = Content.Load<Model>(ContentFolder3D + "Island2/Island2");
             Island3 = Content.Load<Model>(ContentFolder3D + "Island3/Island3");
 
-
-
-            ShipWorld = ShipScale * Matrix.CreateTranslation(ShipPosition);
-            ShipWorld2 = ShipScale * Matrix.CreateTranslation(ShipPosition2);
-            ShipWorld3 = ShipScale * Matrix.CreateTranslation(ShipPosition3);
-            ShipWorld4 = ShipScale * Matrix.CreateTranslation(ShipPosition4);
-            ShipWorld5 = ShipScale * Matrix.CreateTranslation(ShipPosition5);
-            ShipWorld6 = ShipScale * Matrix.CreateTranslation(ShipPosition6);
-            ShipWorld7 = ShipScale * Matrix.CreateTranslation(ShipPosition7);
-            ShipWorld8 = ShipScale * Matrix.CreateTranslation(ShipPosition8);
-            ShipWorld9 = ShipScale * Matrix.CreateTranslation(ShipPosition9);
-            ShipWorld10 = ShipScale * Matrix.CreateTranslation(ShipPosition10);
-            Ship2World = Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position);
-            Ship2World2 = Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position2);
-            Ship2World3 = Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position3);
-            Ship2World4 = Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position4);
-            Ship2World5 = Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position5);
-            Ship2World6 = Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position6);
-            Ship2World7 = Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position7);
-            Ship2World8 = Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position8);
-            Ship2World9 = Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position9);
-            Ship2World10 = Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position10);
-            IslandWorld1 = IslandScale * Matrix.CreateTranslation(IslandPosition1);
-            IslandWorld2 = IslandScale * Matrix.CreateTranslation(IslandPosition2);
-            IslandWorld3 = IslandScale * Matrix.CreateTranslation(IslandPosition3);
-            IslandWorld4 = IslandScale * Matrix.CreateTranslation(IslandPosition4);
-            IslandWorld5 = IslandScale * Matrix.CreateTranslation(IslandPosition5);
-            IslandWorld6 = IslandScale * Matrix.CreateTranslation(IslandPosition6);
-            IslandWorld7 = IslandScale * Matrix.CreateTranslation(IslandPosition7);
-            IslandWorld8 = IslandScale * Matrix.CreateTranslation(IslandPosition8);
-            IslandWorld9 = IslandScale * Matrix.CreateTranslation(IslandPosition9);
-            IslandWorld10 = IslandScale * Matrix.CreateTranslation(IslandPosition10);
-            IslandWorld11 = IslandScale * Matrix.CreateTranslation(IslandPosition11);
-            IslandWorld12 = IslandScale * Matrix.CreateTranslation(IslandPosition12);
-            IslandWorld13 = IslandScale * Matrix.CreateTranslation(IslandPosition13);
-            IslandWorld14 = IslandScale * Matrix.CreateTranslation(IslandPosition14);
-            IslandWorld15 = IslandScale * Matrix.CreateTranslation(IslandPosition15);
-            IslandWorld16 = IslandScale * Matrix.CreateTranslation(IslandPosition16);
-            IslandWorld17 = IslandScale * Matrix.CreateTranslation(IslandPosition17);
-            IslandWorld18 = IslandScale * Matrix.CreateTranslation(IslandPosition18);
-            IslandWorld19 = IslandScale * Matrix.CreateTranslation(IslandPosition19);
-            IslandWorld20 = IslandScale * Matrix.CreateTranslation(IslandPosition20);
-
             
             TilingEffect = Content.Load<Effect>(ContentFolderEffects + "TextureTiling");
             GenericEffect = Content.Load<Effect>(ContentFolderEffects + "BasicShader");
@@ -574,15 +531,44 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             GenericEffect.Parameters["View"].SetValue(Camera.View);
             GenericEffect.Parameters["Projection"].SetValue(Camera.Projection);
             //GenericEffect.Parameters["DiffuseColor"].SetValue(Color.DarkBlue.ToVector3());
+
             var index = 0;
-            //Aplico el efecto basico para el modelo ShipA, tiene problemas con la organización de sus mesh part rotación y posición
+            //Aplico el efecto basico para el modelo ShipA
             foreach (var mesh in Ship.Meshes)
             {
                 if (TexturesShipA[index] != null)
                 {
                     GenericEffect.Parameters["ModelTexture"].SetValue(TexturesShipA[index]);
                 }
+                ShipWorld = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition);
                 GenericEffect.Parameters["World"].SetValue(ShipWorld);
+                mesh.Draw();
+                ShipWorld2 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition2);
+                GenericEffect.Parameters["World"].SetValue(ShipWorld2);
+                mesh.Draw();
+                ShipWorld3 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition3);
+                GenericEffect.Parameters["World"].SetValue(ShipWorld3);
+                mesh.Draw();
+                ShipWorld4 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition4);
+                GenericEffect.Parameters["World"].SetValue(ShipWorld4);
+                mesh.Draw();
+                ShipWorld5 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition5);
+                GenericEffect.Parameters["World"].SetValue(ShipWorld5);
+                mesh.Draw();
+                ShipWorld6 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition6);
+                GenericEffect.Parameters["World"].SetValue(ShipWorld6);
+                mesh.Draw();
+                ShipWorld7 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition7);
+                GenericEffect.Parameters["World"].SetValue(ShipWorld7);
+                mesh.Draw();
+                ShipWorld8 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition8);
+                GenericEffect.Parameters["World"].SetValue(ShipWorld8);
+                mesh.Draw();
+                ShipWorld9 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition9);
+                GenericEffect.Parameters["World"].SetValue(ShipWorld9);
+                mesh.Draw();
+                ShipWorld10 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition10);
+                GenericEffect.Parameters["World"].SetValue(ShipWorld10);
                 mesh.Draw();
                 index++;
             }
@@ -594,24 +580,34 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
                 {
                     GenericEffect.Parameters["ModelTexture"].SetValue(TexturesShipB[index]);
                 }
+                Ship2World = mesh.ParentBone.Transform * Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position);
                 GenericEffect.Parameters["World"].SetValue(Ship2World);
                 mesh.Draw();
+                Ship2World2 = mesh.ParentBone.Transform * Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position2);
                 GenericEffect.Parameters["World"].SetValue(Ship2World2);
                 mesh.Draw();
+                Ship2World3 = mesh.ParentBone.Transform * Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position3);
                 GenericEffect.Parameters["World"].SetValue(Ship2World3);
                 mesh.Draw();
+                Ship2World4 = mesh.ParentBone.Transform * Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position4);
                 GenericEffect.Parameters["World"].SetValue(Ship2World4);
                 mesh.Draw();
+                Ship2World5 = mesh.ParentBone.Transform * Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position5);
                 GenericEffect.Parameters["World"].SetValue(Ship2World5);
                 mesh.Draw();
+                Ship2World6 = mesh.ParentBone.Transform * Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position6);
                 GenericEffect.Parameters["World"].SetValue(Ship2World6);
                 mesh.Draw();
+                Ship2World7 = mesh.ParentBone.Transform * Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position7);
                 GenericEffect.Parameters["World"].SetValue(Ship2World7);
                 mesh.Draw();
+                Ship2World8 = mesh.ParentBone.Transform * Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position8);
                 GenericEffect.Parameters["World"].SetValue(Ship2World8);
                 mesh.Draw();
+                Ship2World9 = mesh.ParentBone.Transform * Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position9);
                 GenericEffect.Parameters["World"].SetValue(Ship2World9);
                 mesh.Draw();
+                Ship2World10 = mesh.ParentBone.Transform * Ship2Scale * Matrix.CreateRotationY(MathHelper.PiOver2) * Matrix.CreateTranslation(Ship2Position10);
                 GenericEffect.Parameters["World"].SetValue(Ship2World10);
                 mesh.Draw();
                 index++;
@@ -625,111 +621,90 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
                 {
                     GenericEffect.Parameters["ModelTexture"].SetValue(TexturesIsland1[index]);
                 }
+                IslandWorld1 = mesh.ParentBone.Transform * IslandScale * Matrix.CreateTranslation(IslandPosition1);
                 GenericEffect.Parameters["World"].SetValue(IslandWorld1);
                 mesh.Draw();
+                IslandWorld5 = mesh.ParentBone.Transform * IslandScale * Matrix.CreateTranslation(IslandPosition5);
                 GenericEffect.Parameters["World"].SetValue(IslandWorld5);
                 mesh.Draw();
+                IslandWorld7 = mesh.ParentBone.Transform * IslandScale * Matrix.CreateTranslation(IslandPosition7);
                 GenericEffect.Parameters["World"].SetValue(IslandWorld7);
                 mesh.Draw();
+                IslandWorld11 = mesh.ParentBone.Transform * IslandScale * Matrix.CreateTranslation(IslandPosition11);
                 GenericEffect.Parameters["World"].SetValue(IslandWorld11);
                 mesh.Draw();
+                IslandWorld12 = mesh.ParentBone.Transform * IslandScale * Matrix.CreateTranslation(IslandPosition12);
                 GenericEffect.Parameters["World"].SetValue(IslandWorld12);
                 mesh.Draw();
+                IslandWorld13 = mesh.ParentBone.Transform * IslandScale * Matrix.CreateTranslation(IslandPosition13);
                 GenericEffect.Parameters["World"].SetValue(IslandWorld13);
                 mesh.Draw();
+                IslandWorld14 = mesh.ParentBone.Transform * IslandScale * Matrix.CreateTranslation(IslandPosition14);
                 GenericEffect.Parameters["World"].SetValue(IslandWorld14);
                 mesh.Draw();
+                IslandWorld16 = mesh.ParentBone.Transform * IslandScale * Matrix.CreateTranslation(IslandPosition16);
                 GenericEffect.Parameters["World"].SetValue(IslandWorld16);
                 mesh.Draw();
+                IslandWorld19 = mesh.ParentBone.Transform * IslandScale * Matrix.CreateTranslation(IslandPosition19);
                 GenericEffect.Parameters["World"].SetValue(IslandWorld19);
                 mesh.Draw();
                 index++;
             }
             index = 0;
-            /*
-            //Aplico el efecto basico para el modelo Island2 y Island3, tiene problemas con la organización de sus mesh part rotación y escala 
-
+            
+            //Aplico el efecto basico para el modelo Island2 
             foreach (var mesh in Island2.Meshes)
             {
                 if (TexturesIsland2[index] != null)
                 {
                     GenericEffect.Parameters["ModelTexture"].SetValue(TexturesIsland2[index]);
                 }
+                IslandWorld2 = mesh.ParentBone.Transform * IslandScale * Matrix.CreateTranslation(IslandPosition2);
                 GenericEffect.Parameters["World"].SetValue(IslandWorld2);
                 mesh.Draw();
+                IslandWorld4 = mesh.ParentBone.Transform * IslandScale * Matrix.CreateTranslation(IslandPosition4);
                 GenericEffect.Parameters["World"].SetValue(IslandWorld4);
                 mesh.Draw();
+                IslandWorld6 = mesh.ParentBone.Transform * IslandScale * Matrix.CreateTranslation(IslandPosition6);
                 GenericEffect.Parameters["World"].SetValue(IslandWorld6);
                 mesh.Draw();
+                IslandWorld10 = mesh.ParentBone.Transform * IslandScale * Matrix.CreateTranslation(IslandPosition10);
                 GenericEffect.Parameters["World"].SetValue(IslandWorld10);
                 mesh.Draw();
+                IslandWorld18 = mesh.ParentBone.Transform * IslandScale * Matrix.CreateTranslation(IslandPosition18);
                 GenericEffect.Parameters["World"].SetValue(IslandWorld18);
                 mesh.Draw();
                 index++;
             }
             index = 0;
-            /*
+
+            //Aplico el efecto basico para el modelo Island3 
             foreach (var mesh in Island3.Meshes)
             {
                 if (TexturesIsland3[index] != null)
                 {
                     GenericEffect.Parameters["ModelTexture"].SetValue(TexturesIsland3[index]);
                 }
+                IslandWorld3 = mesh.ParentBone.Transform * IslandScale * Matrix.CreateTranslation(IslandPosition3);
                 GenericEffect.Parameters["World"].SetValue(IslandWorld3);
                 mesh.Draw();
+                IslandWorld8 = mesh.ParentBone.Transform * IslandScale * Matrix.CreateTranslation(IslandPosition8);
                 GenericEffect.Parameters["World"].SetValue(IslandWorld8);
                 mesh.Draw();
+                IslandWorld9 = mesh.ParentBone.Transform * IslandScale * Matrix.CreateTranslation(IslandPosition9);
                 GenericEffect.Parameters["World"].SetValue(IslandWorld9);
                 mesh.Draw();
+                IslandWorld15 = mesh.ParentBone.Transform * IslandScale * Matrix.CreateTranslation(IslandPosition15);
                 GenericEffect.Parameters["World"].SetValue(IslandWorld15);
                 mesh.Draw();
+                IslandWorld17 = mesh.ParentBone.Transform * IslandScale * Matrix.CreateTranslation(IslandPosition17);
                 GenericEffect.Parameters["World"].SetValue(IslandWorld17);
                 mesh.Draw();
+                IslandWorld20 = mesh.ParentBone.Transform * IslandScale * Matrix.CreateTranslation(IslandPosition20);
                 GenericEffect.Parameters["World"].SetValue(IslandWorld20);
                 mesh.Draw();
                 index++;
-            }*/
-            //Dibujamos modelos
-            /*Ship.Draw(ShipWorld, Camera.View, Camera.Projection);
-            Ship.Draw(ShipWorld2, Camera.View, Camera.Projection);
-            Ship.Draw(ShipWorld3, Camera.View, Camera.Projection);
-            Ship.Draw(ShipWorld4, Camera.View, Camera.Projection);
-            Ship.Draw(ShipWorld5, Camera.View, Camera.Projection);
-            Ship.Draw(ShipWorld6, Camera.View, Camera.Projection);
-            Ship.Draw(ShipWorld7, Camera.View, Camera.Projection);
-            Ship.Draw(ShipWorld8, Camera.View, Camera.Projection);
-            Ship.Draw(ShipWorld9, Camera.View, Camera.Projection);
-            Ship.Draw(ShipWorld10, Camera.View, Camera.Projection);
-            Ship2.Draw(Ship2World, Camera.View, Camera.Projection);
-            Ship2.Draw(Ship2World2, Camera.View, Camera.Projection);
-            Ship2.Draw(Ship2World3, Camera.View, Camera.Projection);
-            Ship2.Draw(Ship2World4, Camera.View, Camera.Projection);
-            Ship2.Draw(Ship2World5, Camera.View, Camera.Projection);
-            Ship2.Draw(Ship2World6, Camera.View, Camera.Projection);
-            Ship2.Draw(Ship2World7, Camera.View, Camera.Projection);
-            Ship2.Draw(Ship2World8, Camera.View, Camera.Projection);
-            Ship2.Draw(Ship2World9, Camera.View, Camera.Projection);
-            Ship2.Draw(Ship2World10, Camera.View, Camera.Projection);
-            Island1.Draw(IslandWorld1, Camera.View, Camera.Projection);
-            Island2.Draw(IslandWorld2, Camera.View, Camera.Projection);
-            Island3.Draw(IslandWorld3, Camera.View, Camera.Projection);
-            Island2.Draw(IslandWorld4, Camera.View, Camera.Projection);
-            Island1.Draw(IslandWorld5, Camera.View, Camera.Projection);
-            Island2.Draw(IslandWorld6, Camera.View, Camera.Projection);
-            Island1.Draw(IslandWorld7, Camera.View, Camera.Projection);
-            Island3.Draw(IslandWorld8, Camera.View, Camera.Projection);
-            Island3.Draw(IslandWorld9, Camera.View, Camera.Projection);
-            Island2.Draw(IslandWorld10, Camera.View, Camera.Projection);
-            Island1.Draw(IslandWorld11, Camera.View, Camera.Projection);
-            Island1.Draw(IslandWorld12, Camera.View, Camera.Projection);
-            Island1.Draw(IslandWorld13, Camera.View, Camera.Projection);
-            Island1.Draw(IslandWorld14, Camera.View, Camera.Projection);
-            Island3.Draw(IslandWorld15, Camera.View, Camera.Projection);
-            Island1.Draw(IslandWorld16, Camera.View, Camera.Projection);
-            Island3.Draw(IslandWorld17, Camera.View, Camera.Projection);
-            Island2.Draw(IslandWorld18, Camera.View, Camera.Projection);
-            Island1.Draw(IslandWorld19, Camera.View, Camera.Projection);
-            Island3.Draw(IslandWorld20, Camera.View, Camera.Projection);*/
+            }
 
             // Dibujamos primitivas
             DrawGeometry(Palmera, PalmeraPosition1, Camera.View, Camera.Projection);

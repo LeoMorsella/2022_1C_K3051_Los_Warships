@@ -329,10 +329,7 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
                 foreach (var meshPart in mesh.MeshParts)
                 {
                     var basicEffect = ((BasicEffect)meshPart.Effect);
-                    if (basicEffect.Texture != null)
-                    {
-                        TexturesShipA.Add(basicEffect.Texture);
-                    }
+                    TexturesShipA.Add(basicEffect.Texture);
                     meshPart.Effect = GenericEffect;
                 }
 
@@ -435,19 +432,22 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             //Aplico el efecto basico para el modelo ShipA
             foreach (var mesh in Ship.Meshes)
             {
-                if (TexturesShipA[index] != null)
+                foreach (var meshPart in mesh.MeshParts)
                 {
-                    GenericEffect.Parameters["ModelTexture"].SetValue(TexturesShipA[index]);
-                }
-    
-                foreach (var shipWorld in ShipWorldA) 
-                {
-                    var world = mesh.ParentBone.Transform * shipWorld;
-                    GenericEffect.Parameters["World"].SetValue(world);
-                    mesh.Draw();
-                }
+                    if (TexturesShipA[index] != null)
+                    {
+                        GenericEffect.Parameters["ModelTexture"].SetValue(TexturesShipA[index]);
+                    }
 
-                index++;
+                    foreach (var shipWorld in ShipWorldA)
+                    {
+                        var world = mesh.ParentBone.Transform * shipWorld;
+                        GenericEffect.Parameters["World"].SetValue(world);
+                        mesh.Draw();
+                    }
+
+                    index++;
+                }
             }
             index = 0;
             //Aplico el efecto basico para el modelo ShipB

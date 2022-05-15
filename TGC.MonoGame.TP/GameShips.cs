@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using BepuPhysics.Collidables;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using TGC.MonoGame.Samples.Cameras;
 using TGC.MonoGame.Samples.Geometries;
 using TGC.MonoGame.Samples.Geometries.Textures;
@@ -430,10 +431,7 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
                 foreach (var meshPart in mesh.MeshParts)
                 {
                     var basicEffect = ((BasicEffect)meshPart.Effect);
-                    if (basicEffect.Texture != null)
-                    {
-                        TexturesShipA.Add(basicEffect.Texture);
-                    }
+                    TexturesShipA.Add(basicEffect.Texture);
                     meshPart.Effect = GenericEffect;
                 }
 
@@ -499,10 +497,55 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
 
             base.LoadContent();
         }
-
+        private float velocidadShip { get; set; } = 0f;
         /// <inheritdoc />
         protected override void Update(GameTime gameTime)
         {
+            var elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            bool press = false;
+            // Caputo el estado del teclado
+            var keyboardState = Keyboard.GetState();
+            if (keyboardState.IsKeyDown(Keys.W))
+            {
+                velocidadShip += elapsedTime;
+                press = true;
+            }
+            if (keyboardState.IsKeyDown(Keys.S))
+            {
+                velocidadShip -= elapsedTime;
+                press = true;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.A))
+            {
+                ShipWorld *= Matrix.CreateRotationY(-0.05f);
+            }
+            //ShipWorld *= Matrix.CreateRotationY(-0.05f) * Matrix.CreateTranslation(ShipPosition);
+            ShipWorld *= Matrix.CreateRotationX(-0.05f);
+            if (keyboardState.IsKeyDown(Keys.D))
+            {
+                ShipWorld *= Matrix.CreateRotationY(-0.05f);
+            }
+
+            if (velocidadShip!=0 && !press)
+            {
+                if (velocidadShip > 0 && velocidadShip < 1)
+                {
+                    velocidadShip = 0f;
+
+                }
+                else if (velocidadShip < 0)
+                {
+                    velocidadShip += elapsedTime;
+                }
+                else if (velocidadShip>0)
+                {
+                    velocidadShip -= elapsedTime;
+                }
+            }
+
+            AcelerarShip(Vector3.UnitX * velocidadShip);
+
             Camera.Update(gameTime);
 
 
@@ -536,41 +579,45 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             //Aplico el efecto basico para el modelo ShipA
             foreach (var mesh in Ship.Meshes)
             {
-                if (TexturesShipA[index] != null)
+                foreach (var meshPart in mesh.MeshParts)
                 {
-                    GenericEffect.Parameters["ModelTexture"].SetValue(TexturesShipA[index]);
+                    if (TexturesShipA[index] != null)
+                    {
+                        GenericEffect.Parameters["ModelTexture"].SetValue(TexturesShipA[index]);
+                    }
+
+                    ShipWorld = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition);
+                    GenericEffect.Parameters["World"].SetValue(ShipWorld);
+                    mesh.Draw();
+                    ShipWorld2 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition2);
+                    GenericEffect.Parameters["World"].SetValue(ShipWorld2);
+                    mesh.Draw();
+                    ShipWorld3 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition3);
+                    GenericEffect.Parameters["World"].SetValue(ShipWorld3);
+                    mesh.Draw();
+                    ShipWorld4 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition4);
+                    GenericEffect.Parameters["World"].SetValue(ShipWorld4);
+                    mesh.Draw();
+                    ShipWorld5 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition5);
+                    GenericEffect.Parameters["World"].SetValue(ShipWorld5);
+                    mesh.Draw();
+                    ShipWorld6 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition6);
+                    GenericEffect.Parameters["World"].SetValue(ShipWorld6);
+                    mesh.Draw();
+                    ShipWorld7 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition7);
+                    GenericEffect.Parameters["World"].SetValue(ShipWorld7);
+                    mesh.Draw();
+                    ShipWorld8 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition8);
+                    GenericEffect.Parameters["World"].SetValue(ShipWorld8);
+                    mesh.Draw();
+                    ShipWorld9 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition9);
+                    GenericEffect.Parameters["World"].SetValue(ShipWorld9);
+                    mesh.Draw();
+                    ShipWorld10 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition10);
+                    GenericEffect.Parameters["World"].SetValue(ShipWorld10);
+                    mesh.Draw();
+                    index++;
                 }
-                ShipWorld = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition);
-                GenericEffect.Parameters["World"].SetValue(ShipWorld);
-                mesh.Draw();
-                ShipWorld2 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition2);
-                GenericEffect.Parameters["World"].SetValue(ShipWorld2);
-                mesh.Draw();
-                ShipWorld3 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition3);
-                GenericEffect.Parameters["World"].SetValue(ShipWorld3);
-                mesh.Draw();
-                ShipWorld4 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition4);
-                GenericEffect.Parameters["World"].SetValue(ShipWorld4);
-                mesh.Draw();
-                ShipWorld5 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition5);
-                GenericEffect.Parameters["World"].SetValue(ShipWorld5);
-                mesh.Draw();
-                ShipWorld6 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition6);
-                GenericEffect.Parameters["World"].SetValue(ShipWorld6);
-                mesh.Draw();
-                ShipWorld7 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition7);
-                GenericEffect.Parameters["World"].SetValue(ShipWorld7);
-                mesh.Draw();
-                ShipWorld8 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition8);
-                GenericEffect.Parameters["World"].SetValue(ShipWorld8);
-                mesh.Draw();
-                ShipWorld9 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition9);
-                GenericEffect.Parameters["World"].SetValue(ShipWorld9);
-                mesh.Draw();
-                ShipWorld10 = mesh.ParentBone.Transform * ShipScale * Matrix.CreateTranslation(ShipPosition10);
-                GenericEffect.Parameters["World"].SetValue(ShipWorld10);
-                mesh.Draw();
-                index++;
             }
             index = 0;
             //Aplico el efecto basico para el modelo ShipB
@@ -776,6 +823,12 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             DrawGeometry(Piedra, PiedraPosition38, Camera.View, Camera.Projection);
 
             base.Draw(gameTime);
+        }
+
+        private void AcelerarShip(Vector3 incremento)
+        {
+            ShipPosition += incremento;
+            ShipWorld *= Matrix.CreateTranslation(ShipPosition);
         }
 
         private void DrawGeometry(GeometricPrimitive geometry, Vector3 position, Matrix View, Matrix Projection)

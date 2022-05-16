@@ -89,6 +89,10 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
 
         // Triangle count in this case
         private int PrimitiveCount { get; set; }
+        // Player variables de movimiento 
+        private float PlayerVelocity { get; set; } = 0f;
+        private float PlayerAceleracion { get; set; } = 2f;
+        private float PlayerFreno { get; set; }
 
         public GameShips()
         {
@@ -129,7 +133,7 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             ShipScaleB = Matrix.CreateScale(0.1f);
             IslandScale = Matrix.CreateScale(0.04f);
 
-            PlayerPosition = new Vector3(1200f, 200f, -3500f);
+            PlayerPosition = new Vector3(1200f, 190f, -3500f);
             PlayerRotation = Matrix.CreateRotationY(-MathHelper.PiOver2);
             PlayerWorld = ShipScaleA * PlayerRotation * Matrix.CreateTranslation(PlayerPosition);
 
@@ -439,55 +443,43 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             // Build the View matrix from the Position and TargetPosition
             targetCamera.BuildView();
         }
-
-        private float velocidadShip { get; set; } = 0f;
         /// <inheritdoc />
         protected override void Update(GameTime gameTime)
         {
             var elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            bool press = false;
+            bool isMove = false;
             // Caputo el estado del teclado
             var keyboardState = Keyboard.GetState();
+            //Acelera al Player hacia delante con W
             if (keyboardState.IsKeyDown(Keys.W))
             {
-                velocidadShip += elapsedTime;
-                press = true;
+                Acelerar(elapsedTime,1f);
+                isMove = true;
             }
+            //Desacelera al Player con S
             if (keyboardState.IsKeyDown(Keys.S))
             {
-                velocidadShip -= elapsedTime;
-                press = true;
+                Acelerar(elapsedTime,-1f);
+                isMove = true;
             }
-
+            //Frena al Player con una intensidad de 2f
+            if (keyboardState.IsKeyDown(Keys.F))
+                Frenar(elapsedTime);
+            //Vira a la izquierda
             if (keyboardState.IsKeyDown(Keys.A))
             {
-                ShipWorld *= Matrix.CreateRotationY(-0.05f);
+                Virar(1f);
+                isMove = true;
             }
-            //ShipWorld *= Matrix.CreateRotationY(-0.05f) * Matrix.CreateTranslation(ShipPosition);
-            ShipWorld *= Matrix.CreateRotationX(-0.05f);
+            //Vira a la derecha
             if (keyboardState.IsKeyDown(Keys.D))
             {
-                ShipWorld *= Matrix.CreateRotationY(-0.05f);
+                Virar(-1f);
+                isMove = true;
             }
-
-            if (velocidadShip!=0 && !press)
-            {
-                if (velocidadShip > 0 && velocidadShip < 1)
-                {
-                    velocidadShip = 0f;
-
-                }
-                else if (velocidadShip < 0)
-                {
-                    velocidadShip += elapsedTime;
-                }
-                else if (velocidadShip>0)
-                {
-                    velocidadShip -= elapsedTime;
-                }
-            }
-
-            AcelerarShip(Vector3.UnitX * velocidadShip);
+            //Si roto o acelero aplico una actulización de la posición y sentido del Player
+            if (isMove || PlayerVelocity!=0f)
+                UpdatePostion();
             //freeCamera.Update(gameTime);
 
             // Update the Camera accordingly, as it follows the Robot
@@ -634,10 +626,40 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             base.Draw(gameTime);
         }
 
-        private void AcelerarShip(Vector3 incremento)
+        private void Acelerar(float time, float sentido)
         {
-            ShipPosition += incremento;
-            ShipWorld *= Matrix.CreateTranslation(ShipPosition);
+            PlayerVelocity += PlayerAceleracion * time * sentido;
+        }
+        private void Virar(float sentido)
+        {
+            PlayerRotation *= Matrix.CreateRotationY(sentido * 0.005f);
+        }
+        private void UpdatePostion()
+        {
+            //Calculo la nueva posición del Player
+            var newPosition = PlayerPosition + Vector3.Transform(Vector3.UnitX, PlayerRotation) * PlayerVelocity;
+            PlayerPosition = newPosition;
+            PlayerWorld = ShipScaleA * PlayerRotation * Matrix.CreateTranslation(PlayerPosition);
+        }
+        private void Frenar(float time)
+        {
+            if (PlayerVelocity != 0)
+            {
+                //En caso de una velocidad entre -1 y 1, se establece la velocidad en cero
+                if (PlayerVelocity >= -1f && PlayerVelocity <= 1f)
+                    PlayerVelocity = 0f;
+                if (PlayerVelocity != 0)
+                {
+                    //Evaluo el signo de la velocidad para entender si avanza o retrocede
+                    if (PlayerVelocity < 0)
+                        PlayerFreno = 3f;
+                    else
+                        PlayerFreno = -3f;
+                    //Disminuyo la velocidad en base al tiempo 
+                    PlayerVelocity += PlayerFreno * time;
+                }
+            }
+
         }
 
         private void DrawGeometry(GeometricPrimitive geometry, Vector3 position, Matrix View, Matrix Projection)

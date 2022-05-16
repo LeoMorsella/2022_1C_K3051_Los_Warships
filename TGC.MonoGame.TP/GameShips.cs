@@ -33,7 +33,11 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
         private Texture2D TerrainTexture { get; set; }
         private VertexBuffer TerrainVertexBuffer { get; set; }
         private IndexBuffer TerrainIndexBuffer { get; set; }
-        private FreeCamera Camera { get; set; }
+        private FreeCamera freeCamera { get; set; }
+
+        private const float CameraFollowRadius = 250f;
+        private const float CameraUpDistance = 80f;
+        private TargetCamera targetCamera { get; set; }
 
         private Model Ship { get; set; }
         private Model Ship2 { get; set; }
@@ -47,6 +51,10 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
         private Matrix[] IslandWorld1 { get; set; }
         private Matrix[] IslandWorld2 { get; set; }
         private Matrix[] IslandWorld3 { get; set; }
+
+        private Matrix PlayerWorld { get; set; }
+        private Vector3 PlayerPosition { get; set; }
+        private Matrix PlayerRotation { get; set; }
 
         // Matrices de Escala
         private Matrix ShipScaleA { get; set; }
@@ -104,17 +112,25 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             var width = GraphicsDevice.Viewport.Width;
             var height = GraphicsDevice.Viewport.Height;
 
-            //Camera = new FreeCamera(aspectRatio, new Vector3(0,300f,200f) , new Point(width/2,height/2));
-            Camera = new FreeCamera(aspectRatio, new Vector3(1000f, 800f, 3000f), new Point(width / 2, height / 2));
+            //freeCamera = new FreeCamera(aspectRatio, new Vector3(0,300f,200f) , new Point(width/2,height/2));
+            freeCamera = new FreeCamera(aspectRatio, new Vector3(1000f, 800f, 3000f), new Point(width / 2, height / 2));
             var nearPlane = 1f;
             var farPlane = 8000f;
             var fieldOfView = MathHelper.ToRadians(60f);
-            Camera.BuildProjection(aspectRatio, nearPlane, farPlane, fieldOfView);
-            Camera.MovementSpeed = 500f;
+            freeCamera.BuildProjection(aspectRatio, nearPlane, farPlane, fieldOfView);
+            freeCamera.MovementSpeed = 500f;
+
+            var position = Vector3.One * 100f;
+            var targetPosition = Vector3.Zero;
+            targetCamera = new TargetCamera(aspectRatio, position, targetPosition, nearPlane, farPlane);
 
             ShipScaleA = Matrix.CreateScale(0.01f);
             ShipScaleB = Matrix.CreateScale(0.1f);
             IslandScale = Matrix.CreateScale(0.04f);
+
+            PlayerPosition = new Vector3(1200f, 200f, -3500f);
+            PlayerRotation = Matrix.CreateRotationY(-MathHelper.PiOver2);
+            PlayerWorld = ShipScaleA * PlayerRotation * Matrix.CreateTranslation(PlayerPosition);
 
             ShipWorldA = new Matrix[]
             {
@@ -393,13 +409,43 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             SeaTexture = Content.Load<Texture2D>(ContentFolderTextures + "sea-texture");
             Quad = new QuadPrimitive(GraphicsDevice);
 
+            UpdateCamera();
+
             base.LoadContent();
+        }
+
+        /// <summary>
+        ///     Updates the internal values of the Camera
+        /// </summary>
+        private void UpdateCamera()
+        {
+            // Create a normalized vector that points to the back of the Robot
+            var shipBackDirection = Vector3.Transform(Vector3.Left, PlayerRotation);
+            // Then scale the vector by a radius, to set an horizontal distance between the Camera and the Robot
+            var orbitalPosition = shipBackDirection * CameraFollowRadius;
+
+
+            // We will move the Camera in the Y axis by a given distance, relative to the Robot
+            var upDistance = Vector3.Up * CameraUpDistance;
+
+            // Calculate the new Camera Position by using the Robot Position, then adding the vector orbitalPosition that sends 
+            // the camera further in the back of the Robot, and then we move it up by a given distance
+            targetCamera.Position = PlayerPosition + orbitalPosition + upDistance;
+
+            // Set the Target as the Robot, the Camera needs to be always pointing to it
+            targetCamera.TargetPosition = PlayerPosition;
+
+            // Build the View matrix from the Position and TargetPosition
+            targetCamera.BuildView();
         }
 
         /// <inheritdoc />
         protected override void Update(GameTime gameTime)
         {
-            Camera.Update(gameTime);
+            //freeCamera.Update(gameTime);
+
+            // Update the Camera accordingly, as it follows the Robot
+            UpdateCamera();
 
 
             base.Update(gameTime);
@@ -408,7 +454,10 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
         /// <inheritdoc />
         protected override void Draw(GameTime gameTime)
         {
-            var viewProjection = Camera.View * Camera.Projection;
+            //var activeCamera = freeCamera;
+            var activeCamera = targetCamera;
+            
+            var viewProjection = activeCamera.View * activeCamera.Projection;
 
 
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -424,8 +473,8 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             Quad.Draw(TilingEffect);
 
             // Para dibujar le modelo necesitamos pasarle informacion que el efecto esta esperando.
-            GenericEffect.Parameters["View"].SetValue(Camera.View);
-            GenericEffect.Parameters["Projection"].SetValue(Camera.Projection);
+            GenericEffect.Parameters["View"].SetValue(activeCamera.View);
+            GenericEffect.Parameters["Projection"].SetValue(activeCamera.Projection);
             //GenericEffect.Parameters["DiffuseColor"].SetValue(Color.DarkBlue.ToVector3());
 
             var index = 0;
@@ -448,6 +497,10 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
 
                     index++;
                 }
+
+                var pWorld = mesh.ParentBone.Transform * PlayerWorld;
+                GenericEffect.Parameters["World"].SetValue(pWorld);
+                mesh.Draw();
             }
             index = 0;
             //Aplico el efecto basico para el modelo ShipB
@@ -527,10 +580,10 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
 
             // Dibujamos primitivas
             foreach (var palmPos in PalmeraPosition)
-                DrawGeometry(Palmera, palmPos, Camera.View, Camera.Projection);
+                DrawGeometry(Palmera, palmPos, activeCamera.View, activeCamera.Projection);
 
             foreach (var piePos in PiedraPosition)
-                DrawGeometry(Piedra, piePos, Camera.View, Camera.Projection);
+                DrawGeometry(Piedra, piePos, activeCamera.View, activeCamera.Projection);
 
             base.Draw(gameTime);
         }

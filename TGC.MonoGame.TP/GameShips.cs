@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework.Input;
 using TGC.MonoGame.Samples.Cameras;
 using TGC.MonoGame.Samples.Geometries;
 using TGC.MonoGame.Samples.Geometries.Textures;
+using TGC.MonoGame.TP;
+
 
 namespace TGC.MonoGame.Samples.Samples.Heightmaps
 {
@@ -93,6 +95,11 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
         private float PlayerVelocity { get; set; } = 0f;
         private float PlayerAceleracion { get; set; } = 2f;
         private float PlayerFreno { get; set; }
+
+        //Rain 
+        private SpriteBatch SpriteBatch { get; set; }
+        private ParticleGenerator Rain { get; set; }
+        private Texture2D DropTexture { get; set; }
 
         public GameShips()
         {
@@ -415,6 +422,12 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             Quad = new QuadPrimitive(GraphicsDevice);
 
             UpdateCamera();
+            //Cargo la textura de la gota
+            DropTexture = Content.Load<Texture2D>(ContentFolderTextures + "drop-texture");
+            //Creo sprite para la lluvia
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
+            //Objeto Rain que crea las gotas y las distribuye en pantalla
+            Rain = new ParticleGenerator(DropTexture, Graphics.GraphicsDevice.Viewport.Width, 500);
 
             base.LoadContent();
         }
@@ -484,7 +497,9 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
 
             // Update the Camera accordingly, as it follows the Robot
             UpdateCamera();
-
+            
+            //Actualiza la lluvia en base al tiempo
+            Rain.Update(elapsedTime, GraphicsDevice);
 
             base.Update(gameTime);
         }
@@ -494,7 +509,7 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
         {
             //var activeCamera = freeCamera;
             var activeCamera = targetCamera;
-            
+
             var viewProjection = activeCamera.View * activeCamera.Projection;
 
 
@@ -622,6 +637,11 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
 
             foreach (var piePos in PiedraPosition)
                 DrawGeometry(Piedra, piePos, activeCamera.View, activeCamera.Projection);
+
+            //Dibujo los sprite de lluvia
+            SpriteBatch.Begin();
+            Rain.Draw(SpriteBatch);
+            SpriteBatch.End();
 
             base.Draw(gameTime);
         }

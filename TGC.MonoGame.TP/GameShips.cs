@@ -38,6 +38,9 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
         private IndexBuffer TerrainIndexBuffer { get; set; }
         private FreeCamera freeCamera { get; set; }
 
+        public Oceano oceano;
+        private float TotalTime = 0;
+
         private const float CameraFollowRadius = 250f;
         private const float CameraUpDistance = 80f;
         private TargetCamera targetCamera { get; set; }
@@ -429,6 +432,9 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             //Objeto Rain que crea las gotas y las distribuye en pantalla
             Rain = new ParticleGenerator(DropTexture, Graphics.GraphicsDevice.Viewport.Width, 500);
 
+            var oceanEffect = Content.Load<Effect>(ContentFolderEffects + "Oceano");
+            oceano = new Oceano(50, 50, 200, new Vector3(0,185f,0), GraphicsDevice, oceanEffect, SeaTexture);
+
             base.LoadContent();
         }
 
@@ -507,6 +513,8 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
         /// <inheritdoc />
         protected override void Draw(GameTime gameTime)
         {
+            TotalTime += Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
+            
             //var activeCamera = freeCamera;
             var activeCamera = targetCamera;
 
@@ -519,11 +527,17 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             GraphicsDevice.Indices = TerrainIndexBuffer;
 
             // Dibujamos Piso
-            TilingEffect.CurrentTechnique = TilingEffect.Techniques["BaseTiling"];
-            //TilingEffect.Parameters["Tiling"].SetValue(new Vector2(10f, 10f));
+            /* TilingEffect.CurrentTechnique = TilingEffect.Techniques["BaseTiling"];
             TilingEffect.Parameters["WorldViewProjection"].SetValue(FloorWorld * viewProjection);
             TilingEffect.Parameters["Texture"].SetValue(SeaTexture);
-            Quad.Draw(TilingEffect);
+            Quad.Draw(TilingEffect); */
+
+            // dibujo el oceano, apagando el backface culling
+            /* GraphicsDevice.BlendState = BlendState.Additive; */ // para hacerlo transparente
+            var oldRasterizerState = GraphicsDevice.RasterizerState;
+            GraphicsDevice.RasterizerState = RasterizerState.CullNone;
+            oceano.Draw(Matrix.Identity, activeCamera.View, activeCamera.Projection, TotalTime);
+            GraphicsDevice.RasterizerState = oldRasterizerState;
 
             // Para dibujar le modelo necesitamos pasarle informacion que el efecto esta esperando.
             GenericEffect.Parameters["View"].SetValue(activeCamera.View);

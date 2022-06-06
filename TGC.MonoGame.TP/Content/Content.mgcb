@@ -13,11 +13,17 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Effects/BasicShader.fx
+#begin Effects/BasicShaderColor.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:Effects/BasicShader.fx
+/build:Effects/BasicShaderColor.fx
+
+#begin Effects/BasicShaderTexture.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/BasicShaderTexture.fx
 
 #begin Effects/Oceano.fx
 /importer:EffectImporter

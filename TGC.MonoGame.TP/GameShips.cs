@@ -32,7 +32,8 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
 
 
         private GraphicsDeviceManager Graphics { get; }
-        private Effect GenericEffect { get; set; }
+        private Effect GenericEffectTexture { get; set; }
+        private Effect GenericEffectColor { get; set; }
         private Texture2D TerrainTexture { get; set; }
         private VertexBuffer TerrainVertexBuffer { get; set; }
         private IndexBuffer TerrainIndexBuffer { get; set; }
@@ -346,7 +347,8 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
 
             
             TilingEffect = Content.Load<Effect>(ContentFolderEffects + "TextureTiling");
-            GenericEffect = Content.Load<Effect>(ContentFolderEffects + "BasicShader");
+            GenericEffectTexture = Content.Load<Effect>(ContentFolderEffects + "BasicShaderTexture");
+            GenericEffectColor = Content.Load<Effect>(ContentFolderEffects + "BasicShaderColor");
 
             TexturesShipA = new List<Texture2D>();
             TexturesShipB = new List<Texture2D>();
@@ -361,7 +363,7 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
                 {
                     var basicEffect = ((BasicEffect)meshPart.Effect);
                     TexturesShipA.Add(basicEffect.Texture);
-                    meshPart.Effect = GenericEffect;
+                    meshPart.Effect = GenericEffectTexture;
                 }
 
             // Asigno el efecto que cargue a cada parte del mesh.
@@ -375,7 +377,7 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
                     {
                         TexturesShipB.Add(basicEffect.Texture);
                     }
-                    meshPart.Effect = GenericEffect;
+                    meshPart.Effect = GenericEffectTexture;
                 }
 
             // Asigno el efecto que cargue a cada parte del mesh.
@@ -389,7 +391,7 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
                     {
                         TexturesIsland1.Add(basicEffect.Texture);
                     }
-                    meshPart.Effect = GenericEffect;
+                    meshPart.Effect = GenericEffectTexture;
                 }
 
             // Asigno el efecto que cargue a cada parte del mesh.
@@ -403,7 +405,7 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
                     {
                         TexturesIsland2.Add(basicEffect.Texture);
                     }
-                    meshPart.Effect = GenericEffect;
+                    meshPart.Effect = GenericEffectTexture;
                 }
 
             // Asigno el efecto que cargue a cada parte del mesh.
@@ -417,7 +419,7 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
                     {
                         TexturesIsland3.Add(basicEffect.Texture);
                     }
-                    meshPart.Effect = GenericEffect;
+                    meshPart.Effect = GenericEffectTexture;
                 }
 
             TilingEffect.Parameters["Tiling"].SetValue(new Vector2(80f, 80f));
@@ -540,8 +542,8 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             GraphicsDevice.RasterizerState = oldRasterizerState;
 
             // Para dibujar le modelo necesitamos pasarle informacion que el efecto esta esperando.
-            GenericEffect.Parameters["View"].SetValue(activeCamera.View);
-            GenericEffect.Parameters["Projection"].SetValue(activeCamera.Projection);
+            GenericEffectTexture.Parameters["View"].SetValue(activeCamera.View);
+            GenericEffectTexture.Parameters["Projection"].SetValue(activeCamera.Projection);
             //GenericEffect.Parameters["DiffuseColor"].SetValue(Color.DarkBlue.ToVector3());
 
             var index = 0;
@@ -552,13 +554,13 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
                 {
                     if (TexturesShipA[index] != null)
                     {
-                        GenericEffect.Parameters["ModelTexture"].SetValue(TexturesShipA[index]);
+                        GenericEffectTexture.Parameters["ModelTexture"].SetValue(TexturesShipA[index]);
                     }
 
                     foreach (var shipWorld in ShipWorldA)
                     {
                         var world = mesh.ParentBone.Transform * shipWorld;
-                        GenericEffect.Parameters["World"].SetValue(world);
+                        GenericEffectTexture.Parameters["World"].SetValue(world);
                         mesh.Draw();
                     }
 
@@ -566,7 +568,7 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
                 }
 
                 var pWorld = mesh.ParentBone.Transform * PlayerWorld;
-                GenericEffect.Parameters["World"].SetValue(pWorld);
+                GenericEffectTexture.Parameters["World"].SetValue(pWorld);
                 mesh.Draw();
             }
             index = 0;
@@ -575,13 +577,13 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             {
                 if (TexturesShipB[index] != null)
                 {
-                    GenericEffect.Parameters["ModelTexture"].SetValue(TexturesShipB[index]);
+                    GenericEffectTexture.Parameters["ModelTexture"].SetValue(TexturesShipB[index]);
                 }
 
                 foreach (var shipWorld in ShipWorldB) 
                 {
                     var world = mesh.ParentBone.Transform * shipWorld;
-                    GenericEffect.Parameters["World"].SetValue(world);
+                    GenericEffectTexture.Parameters["World"].SetValue(world);
                     mesh.Draw();
                 }
                 
@@ -594,13 +596,13 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             {
                 if (TexturesIsland1[index] != null)
                 {
-                    GenericEffect.Parameters["ModelTexture"].SetValue(TexturesIsland1[index]);
+                    GenericEffectTexture.Parameters["ModelTexture"].SetValue(TexturesIsland1[index]);
                 }
 
                 foreach (var islandWorld in IslandWorld1) 
                 {
                     var world = mesh.ParentBone.Transform * islandWorld;
-                    GenericEffect.Parameters["World"].SetValue(world);
+                    GenericEffectTexture.Parameters["World"].SetValue(world);
                     mesh.Draw();
                 }
 
@@ -613,13 +615,13 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             {
                 if (TexturesIsland2[index] != null)
                 {
-                    GenericEffect.Parameters["ModelTexture"].SetValue(TexturesIsland2[index]);
+                    GenericEffectTexture.Parameters["ModelTexture"].SetValue(TexturesIsland2[index]);
                 }
                 
                 foreach (var islandWorld in IslandWorld2) 
                 {
                     var world = mesh.ParentBone.Transform * islandWorld;
-                    GenericEffect.Parameters["World"].SetValue(world);
+                    GenericEffectTexture.Parameters["World"].SetValue(world);
                     mesh.Draw();
                 }
 
@@ -632,13 +634,13 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
             {
                 if (TexturesIsland3[index] != null)
                 {
-                    GenericEffect.Parameters["ModelTexture"].SetValue(TexturesIsland3[index]);
+                    GenericEffectTexture.Parameters["ModelTexture"].SetValue(TexturesIsland3[index]);
                 }
 
                 foreach (var islandWorld in IslandWorld3)
                 {
                     var world = mesh.ParentBone.Transform * islandWorld;
-                    GenericEffect.Parameters["World"].SetValue(world);
+                    GenericEffectTexture.Parameters["World"].SetValue(world);
                     mesh.Draw();
                 }
 
@@ -698,13 +700,13 @@ namespace TGC.MonoGame.Samples.Samples.Heightmaps
 
         private void DrawGeometry(GeometricPrimitive geometry, Vector3 position, Matrix View, Matrix Projection)
         {
-            var effect = geometry.Effect;
 
-            effect.World = Matrix.Identity * Matrix.CreateTranslation(position);
-            effect.View = View;
-            effect.Projection = Projection;
+            GenericEffectColor.Parameters["World"].SetValue(Matrix.Identity * Matrix.CreateTranslation(position));
+            GenericEffectColor.Parameters["View"].SetValue(View);
+            GenericEffectColor.Parameters["Projection"].SetValue(Projection);
+            GenericEffectColor.Parameters["DiffuseColor"].SetValue(new Vector3(1f, 1f, 1f));
 
-            geometry.Draw(effect);
+            geometry.Draw(GenericEffectColor);
         }
 
         /// <summary>
